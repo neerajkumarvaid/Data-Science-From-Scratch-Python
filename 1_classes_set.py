@@ -3,6 +3,10 @@
 Created on Mon Mar  4 04:38:33 2019
 
 @author: Neeraj
+Description: This file contains an example of how to create classes in Python. I've create a "Set" class to which values 
+can be added or removed along with a function to check the existence of a value.
+
+Reference: Chapter 2 A crash course in Python
 """
 
 class Set:
