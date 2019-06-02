@@ -3,9 +3,10 @@
 Created on Tue Mar  5 00:55:07 2019
 
 @author: Neeraj
-"""
 
-""" Chapter 3 : Data Visualization """
+Description: This code illustrates how to use common plotting methods such as line plots, bar graphs, scatter plots in Python.
+Reference: Chapter 3 : Data Visualization 
+"""
 
 from matplotlib import pyplot as plt
 
@@ -60,7 +61,7 @@ grades = [83,95,91,87,70,0,85,82,100,67,73,77,0]
 
 # Create 10 bins (80-89 maps to 80)
 decile = lambda grade: grade//10 * 10
-
+3_visualization.py
 import math
 tertile = lambda grade: math.ceil(grade/100 * 10)
 
