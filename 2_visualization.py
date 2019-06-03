@@ -61,7 +61,7 @@ grades = [83,95,91,87,70,0,85,82,100,67,73,77,0]
 
 # Create 10 bins (80-89 maps to 80)
 decile = lambda grade: grade//10 * 10
-3_visualization.py
+
 import math
 tertile = lambda grade: math.ceil(grade/100 * 10)
 
