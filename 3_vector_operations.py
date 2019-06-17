@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Created on Tue Mar  5 00:55:07 2019
+Created on Mon Jun 17 00:55:07 2019
 @author: Neeraj
 Description: This code illustrates how to create and manipulate vectors in Python. List is used as a data structure to repesent
 vectors in this code.
