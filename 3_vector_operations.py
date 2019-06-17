@@ -134,21 +134,3 @@ def distance(v:Vector, w:Vector) -> Vector:
     # Check if both vectors have equal dimensions
     assert len(v) == len(w),"Vectors should be of the same length"
     return math.sqrt(sum_of_squares(subtract(v,w)))
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
-    
-    
-    
