@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 """
-Spyder Editor
-
-This is a temporary script file.
+Created on Tue Mar  5 00:55:07 2019
+@author: Neeraj
+Description: This code illustrates how to create and manipulate vectors in Python. List is used as a data structure to repesent
+vectors in this code.
+Reference: Chapter 4 : Linear Algebra 
 """
 
 from typing import List
