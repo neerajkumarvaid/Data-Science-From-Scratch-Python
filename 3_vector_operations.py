@@ -2,7 +2,7 @@
 """
 Created on Mon Jun 17 00:55:07 2019
 @author: Neeraj
-Description: This code illustrates how to create and manipulate vectors in Python. List is used as a data structure to repesent
+Description: This code illustrates how to create and manipulate vectors in Python. List is used as a data structure to represent
 vectors in this code.
 Reference: Chapter 4 : Linear Algebra 
 """
