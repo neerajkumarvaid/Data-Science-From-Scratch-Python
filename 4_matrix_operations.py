@@ -4,7 +4,7 @@
 Created on Mon Jun 17 00:55:07 2019
 @author: Neeraj
 Description: This code illustrates how to create and manipulate matrices in Python. List of lists is used as a data structure to 
-repesent matrices in this code.
+represent matrices in this code.
 Reference: Chapter 4 : Linear Algebra 
 """
 
