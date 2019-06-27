@@ -75,5 +75,27 @@ plt.plot(x,y)
 plt.axis([-0.5, 1.5, -0.5, 1.2])
 
 # The normal distribution
-from math import
+from math import sqrt, pi, exp
+
+def normal_pdf(x: float, mu: float = 0, sigma: float = 1) -> float:
+    num = exp(-(x-mu)**2 / 2 / sigma**2)
+    den = sqrt(2*pi)*sigma
+    return num/den
+
+# Plot normal pdf
+x = [x/10.0 for x in range(-50,50)]
+y = [normal_pdf(i) for i in x]
+plt.plot(x,y, '-', label ='mu = 0, sigma = 1')
+plt.plot(x,[normal_pdf(i,0,2) for i in x], '--', label ='mu = 0, sigma = 2')
+plt.plot(x,[normal_pdf(i,1,1) for i in x], '-.', label ='mu = 1, sigma = 1')
+
+from math import erf
+def normal_cdf(x:float, mu: float = 0, sigma: float = 1) -> float:
+    return (1 + erf((x-mu)/sqrt(2) / sigma))/2
+
+x = [x/10.0 for x in range(-50,50)]
+plt.plot(x,[normal_cdf(i,0,1) for i in x], '-', label ='mu = 0, sigma = 1')
+plt.plot(x,[normal_cdf(i,0,2) for i in x], '--', label ='mu = 0, sigma = 2')
+plt.plot(x,[normal_cdf(i,1,1) for i in x], '-.', label ='mu = 1, sigma = 1')
+
 
