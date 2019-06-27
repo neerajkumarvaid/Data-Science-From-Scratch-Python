@@ -98,4 +98,32 @@ plt.plot(x,[normal_cdf(i,0,1) for i in x], '-', label ='mu = 0, sigma = 1')
 plt.plot(x,[normal_cdf(i,0,2) for i in x], '--', label ='mu = 0, sigma = 2')
 plt.plot(x,[normal_cdf(i,1,1) for i in x], '-.', label ='mu = 1, sigma = 1')
 
+# Inverse of normal distribution
+def inverse_normal_cdf(p: float, 
+                       mu: float = 0, 
+                       sigma: float = 1,
+                       tol: float = 0.01) -> float:
+    """Computes a value from Z(0,1) at specified probability (p) level"""
+    
+    # Convert to standard normal distribution
+    if mu != 0 or sigma != 1:
+        return mu + sigma * inverse_normal_cdf(p)
+    
+    low_z = -10.0 # standard normal is 0 at cdf(-10)
+    high_z = 10.0 # standard normal is 0 at cdf(10)
+        
+    # Use binary search to find the desired value
+    while high_z - low_z > tol:
+        midz = (high_z + low_z)/2
+        pmid = normal_cdf(midz)
+            
+        if p > pmid:
+            low_z = midz
+        else:
+            high_z = midz
+        #print(midz)
+    return midz
 
+
+print(inverse_normal_cdf(0.3))      
+        
