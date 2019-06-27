@@ -52,6 +52,25 @@ def uniform_cdf(x: float) -> float:
   else: return 1
   return 0 if x <= 0
 
-import matplotlib.pylot as plt
-plt.line(uniform_cdf)
+# Plot uniform pdf
+import numpy as np
+x = np.linspace(-0.5,1.5,21)
+
+y = []
+
+for i in x:
+    y.append(uniform_pdf(i))
+
+import matplotlib.pyplot as plt
+plt.plot(x,y)
+
+# Plot uniform cdf
+y = []
+
+for i in x:
+    y.append(uniform_cdf(i))
+
+import matplotlib.pyplot as plt
+plt.plot(x,y)
+plt.axis([-0.5, 1.5, -0.5, 1.2])
 
