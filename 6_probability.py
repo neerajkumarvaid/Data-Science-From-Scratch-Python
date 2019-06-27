@@ -74,3 +74,6 @@ import matplotlib.pyplot as plt
 plt.plot(x,y)
 plt.axis([-0.5, 1.5, -0.5, 1.2])
 
+# The normal distribution
+from math import
+
