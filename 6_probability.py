@@ -24,19 +24,26 @@ for _ in range(10000):
   older = random_kid()
   
   if older == Kid.GIRL:
-    orlder_girl += 1
-  if older == Kid.GIRL and younger == Kid.Girl:
+    older_girl += 1
+  if older == Kid.GIRL and younger == Kid.GIRL:
     both_girls += 1
-  if older == Kid.Girl or younger == Kid.Girl:
+  if older == Kid.GIRL or younger == Kid.GIRL:
     either_girl += 1
     
 print(f"P(both girls | older girl = {both_girls/older_girl})")
 print(f"P(both girls | either girl = {both_girls/either_girl})")
 
+
 # Create pdf of a uniform random variable
 def uniform_pdf(x: float) -> float:
-  """ A uniform random variable gives equal probability to values between 0 and 1.""""
+  """A uniform random variable gives equal probability to values between 0 and 1."""
   return 1 if  0 <= x < 1 else 0
+
+# Create cdf of a uniform random variable
+def uniform_cdf(x: float) -> float:
+  if x <= 0: return 0 
+  elif x < 1: return x
+  else: return 1
 
 # Create cdf of a uniform random variable
 def uniform_cdf(x: float) -> float:
