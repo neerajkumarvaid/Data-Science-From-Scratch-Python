@@ -47,7 +47,7 @@ def normal_probability_outside(lo: float,
     return 1 - normal_probability_between(lo, hi, mu, sigma)
 
 
-from scratch.probability import inverse_normal_cdf 
+from probability import inverse_normal_cdf 
 
 def normal_upper_bound(probability: float,
                        mu: float = 0,
