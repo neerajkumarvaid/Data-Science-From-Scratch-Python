@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 Created on Sun Jul  7 06:48:40 2019
+
 @author: Neeraj
 Description: This code performs basic hypothesis testing in Python. 
 Reference: Chapter 6 : Hypothesis and Inference
@@ -17,7 +18,15 @@ def normal_approximation_binomial(n: int, p: float) -> Tuple[float,float]:
     mu = n*p
     sigma = math.sqrt(n*p*(1-p))
     return mu, sigma
-    
+
+
+# Import normal_cdf function from your code of chapter 6
+from scratch.probability import normal_cdf 
+
+#The normal cdf is the probability that a variable is below the threshold
+
+normal_probability_below = normal_cdf
+
 #It's above threshold if it's not below the threshold
 def normal_probability_above(lo: float,
                              mu: float = 0,
@@ -71,3 +80,52 @@ def normal_two_sided_bounds(probability: float,
 
 # Examples to run the code
 mu_0, sigma_0 = normal_approximation_binomial(1000,0.5)
+    
+
+def two_sided_p_value(x: float,
+                      mu: float = 0,
+                      sigma: float = 1) -> float:
+    if x >= mu:
+        return 2*normal_probability_above(x, mu, sigma)
+    else:
+        return 2*normal_probability_below(x, mu, sigma)
+    
+two_sided_p_value(529.5, mu_0, sigma_0)   # 0.062
+
+import random
+
+extreme_value_count = 0
+for _ in range(1000):
+    num_heads = sum(1 if random.random() < 0.5 else 0    # Count # of heads
+                    for _ in range(1000))                # in 1000 flips,
+    if num_heads >= 530 or num_heads <= 470:             # and count how often
+        extreme_value_count += 1                         # the # is 'extreme'
+
+# p-value was 0.062 => ~62 extreme values out of 1000
+assert 59 < extreme_value_count < 65, f"{extreme_value_count}"
+
+two_sided_p_value(531.5, mu_0, sigma_0)   # 0.0463
+
+
+tspv = two_sided_p_value(531.5, mu_0, sigma_0)
+assert 0.0463 < tspv < 0.0464
+
+upper_p_value = normal_probability_above
+lower_p_value = normal_probability_below
+
+upper_p_value(524.5, mu_0, sigma_0) # 0.061
+
+upper_p_value(526.5, mu_0, sigma_0) # 0.047
+
+p_hat = 525 / 1000
+mu = p_hat
+sigma = math.sqrt(p_hat * (1 - p_hat) / 1000)   # 0.0158
+
+normal_two_sided_bounds(0.95, mu, sigma)        # [0.4940, 0.5560]
+
+p_hat = 540 / 1000
+mu = p_hat
+sigma = math.sqrt(p_hat * (1 - p_hat) / 1000) # 0.0158
+normal_two_sided_bounds(0.95, mu, sigma) # [0.5091, 0.5709]
+
+    
