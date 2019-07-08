@@ -16,6 +16,7 @@ def normal_approximation_binomial(n: int, p: float) -> Tuple[float,float]:
     """Estimates mu and sigma for a specified p and n"""
     mu = n*p
     sigma = math.sqrt(n*p*(1-p))
+    return mu, sigma
     
 #It's above threshold if it's not below the threshold
 def normal_probability_above(lo: float,
