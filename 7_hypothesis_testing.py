@@ -35,4 +35,38 @@ def normal_probability_outside(lo: float,
                                hi: float,
                                mu: float = 0,
                                sigma: float = 1) -> float:
-    return 1 - normal_probability_between(lo, high, mu, sigma)
+    return 1 - normal_probability_between(lo, hi, mu, sigma)
+
+
+from scratch.probability import inverse_normal_cdf 
+
+def normal_upper_bound(probability: float,
+                       mu: float = 0,
+                       sigma: float = 1) -> float:
+    """Returns the z for which P(Z<=z) = probability"""
+    return inverse_normal_cdf(probability, mu, sigma)
+
+def normal_lower_bound(probability: float,
+                       mu: float = 0,
+                       sigma: float = 1) -> float:
+    """Returns the z for which P(Z>=z) = probability"""
+    return inverse_normal_cdf(1-probability, mu, sigma)
+
+
+def normal_two_sided_bounds(probability: float,
+                            mu: float = 0,
+                            sigma: float = 1) -> Tuple[float, float]:
+    """ Returns symmetric bounds (around the mean) that
+    contains the specified probability"""
+    tail_probability = (1-probability)/2
+    
+    # Upper bound should have tail probability above it
+    upper_bound  = normal_upper_bound(tail_probability, mu, sigma)
+    
+     # Lower bound should have tail probability below it
+    lower_bound  = normal_lower_bound(tail_probability, mu, sigma)
+    
+    return upper_bound, lower_bound
+
+# Examples to run the code
+mu_0, sigma_0 = normal_approximation_binomial(1000,0.5)
