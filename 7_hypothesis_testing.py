@@ -5,7 +5,7 @@ Created on Sun Jul  7 06:48:40 2019
 
 @author: Neeraj
 Description: This code performs basic hypothesis testing in Python. 
-Reference: Chapter 6 : Hypothesis and Inference
+Reference: Chapter 7 : Hypothesis and Inference
 """
 import os
 os.chdir('/Users/apple/Documents/Courses/DSS')
@@ -129,3 +129,53 @@ sigma = math.sqrt(p_hat * (1 - p_hat) / 1000) # 0.0158
 normal_two_sided_bounds(0.95, mu, sigma) # [0.5091, 0.5709]
 
     
+from typing import List
+
+def run_experiment() -> List[bool]:
+    """Flips a fair coin 1000 times, True = heads, False = tails"""
+    return [random.random() < 0.5 for _ in range(1000)]
+
+def reject_fairness(experiment: List[bool]) -> bool:
+    """Using the 5% significance levels"""
+    num_heads = len([flip for flip in experiment if flip])
+    return num_heads < 469 or num_heads > 531
+
+random.seed(0)
+experiments = [run_experiment() for _ in range(1000)]
+num_rejections = len([experiment
+                      for experiment in experiments
+                      if reject_fairness(experiment)])
+
+assert num_rejections == 46
+
+def estimated_parameters(N: int, n: int) -> Tuple[float, float]:
+    p = n / N
+    sigma = math.sqrt(p * (1 - p) / N)
+    return p, sigma
+
+def a_b_test_statistic(N_A: int, n_A: int, N_B: int, n_B: int) -> float:
+    p_A, sigma_A = estimated_parameters(N_A, n_A)
+    p_B, sigma_B = estimated_parameters(N_B, n_B)
+    return (p_B - p_A) / math.sqrt(sigma_A ** 2 + sigma_B ** 2)
+
+z = a_b_test_statistic(1000, 200, 1000, 180)    # -1.14
+
+
+assert -1.15 < z < -1.13
+s
+two_sided_p_value(z)                            # 0.254
+
+
+assert 0.253 < two_sided_p_value(z) < 0.255
+
+z = a_b_test_statistic(1000, 200, 1000, 150)    # -2.94
+two_sided_p_value(z)                            # 0.003
+
+def B(alpha: float, beta: float) -> float:
+    """A normalizing constant so that the total probability is 1"""
+    return math.gamma(alpha) * math.gamma(beta) / math.gamma(alpha + beta)
+
+def beta_pdf(x: float, alpha: float, beta: float) -> float:
+    if x <= 0 or x >= 1:          # no weight outside of [0, 1]
+        return 0
+    return x ** (alpha - 1) * (1 - x) ** (beta - 1) / B(alpha, beta)
