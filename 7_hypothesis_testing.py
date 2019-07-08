@@ -20,7 +20,7 @@ def normal_approximation_binomial(n: int, p: float) -> Tuple[float,float]:
 
 
 # Import normal_cdf function from your code of chapter 6
-from scratch.probability import normal_cdf 
+from probability import normal_cdf 
 
 #The normal cdf is the probability that a variable is below the threshold
 
