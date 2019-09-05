@@ -6,3 +6,8 @@ I used Python 3.7 to code these algorithms.
 | ------------- | ------------- |
 | [1_classes_set.py](https://github.com/neerajkumarvaid/Data-Science-From-Scratch-Python-/blob/master/1_classes_set.py)  | Illustrates how to create classes in Python  |
 | [2_visualization.py](https://github.com/neerajkumarvaid/Data-Science-From-Scratch-Python-/blob/master/2_visualization.py) | Illustartes how to create bar, scatter and line plots. |
+| [3_vector_operations.py](https://github.com/neerajkumarvaid/Data-Science-From-Scratch-Python-/blob/master/3_vector_operations.py) | Illustrates how to create and manipulate vectors in Python |
+| [4_matrix_operations.py](https://github.com/neerajkumarvaid/Data-Science-From-Scratch-Python-/blob/master/4_matrix_operations.py) | Illustrates how to create and manipulate matrices in Python |
+| [5_statistics.py ](https://github.com/neerajkumarvaid/Data-Science-From-Scratch-Python-/blob/master/5_statistics.py) | Computes basic statstics including mean, variance, covariance, correlation etc. from the data. |
+| [6_probability.py](https://github.com/neerajkumarvaid/Data-Science-From-Scratch-Python-/blob/master/6_probability.py) | Demonstrates basic porbability operations in Python. |
+| [7_hypothesis_testing.py](https://github.com/neerajkumarvaid/Data-Science-From-Scratch-Python-/blob/master/7_hypothesis_testing.py) | Performs basic hypothesis testing in Python.  |
