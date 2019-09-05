@@ -3,7 +3,7 @@ This repository contains my implementation of the algorithms discussed in the bo
 I used Python 3.7 to code these algorithms.  
 
 | **S.No.**| **File name** | **Description** |
-| -------------|  ------------- | ------------- |
+| :-------------: | ------------- | ------------- |
 |1| [classes_set.py](https://github.com/neerajkumarvaid/Data-Science-From-Scratch-Python-/blob/master/1_classes_set.py)  | Illustrates how to create classes in Python  |
 |2| [visualization.py](https://github.com/neerajkumarvaid/Data-Science-From-Scratch-Python-/blob/master/2_visualization.py) | Illustartes how to create bar, scatter and line plots. |
 |3| [vector_operations.py](https://github.com/neerajkumarvaid/Data-Science-From-Scratch-Python-/blob/master/3_vector_operations.py) | Illustrates how to create and manipulate vectors in Python |
