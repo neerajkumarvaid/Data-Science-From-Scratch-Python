@@ -4,7 +4,7 @@ Created on Mon Jun 17 00:55:07 2019
 @author: Neeraj
 Description: This code computes basic statstics including mean, variance, covariance, correlation etc. from the data.
 vectors in this code.
-Reference: Chapter 4 : Linear Algebra 
+Reference: Chapter 5 : Statistics
 """
 
 
