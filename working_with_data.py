@@ -107,3 +107,23 @@ for i in range(num_vectors):
 ax[-1][-1].set_xlim(ax[0][-1].get_xlim())
 ax[0][0].set_ylim(ax[0][1].get_ylim())
 #plt.show()
+
+from collections import namedtuple
+import datetime
+StockPrice = namedtuple('StockPrice',['symbol', 'date', 'closing_price'])
+price = StockPrice('MSFT', datetime.date(2018,12, 14), 106.3)
+
+from typing import NamedTuple
+class StockPrice(NamedTuple):
+    symbol: str
+    date: datetime.date
+    closing_price: float
+        
+    def is_high_tech(self) -> bool:
+        return self.symbol in ['MSFT','GOOG','FB','AMZN','AAPL']
+    
+price = StockPrice('MSFT', datetime.date(2018,12, 14), 106.3)
+
+assert price.symbol == 'MSFT'
+assert price.closing_price == 106.3
+assert price.is_high_tech()
