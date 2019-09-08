@@ -57,3 +57,53 @@ plt.show()
 from statistics import correlation;
 print(correlation(xs,ys1)) # about 0.9
 print(correlation(xs,ys2)) # about -0.9
+
+# Correlation matrix is a way to check pairwise correlations in 2 or more dimensions
+from vector_operations import Vector; 
+from matrix_operations import Matrix, make_matrix;
+
+def correlation_matrix(data: List[Vector]) -> Matrix:
+    """Creates a len(data) x len(data) matrix where (i-j)th element
+    is correlation between data[i] and data[j]"""
+    
+    def correlation_ij(i: int, j: int) -> float:
+        return correlation(data[i], data[j])
+
+    return make_matrix(len(data), len([data[0]]), correlation_ij)
+
+# corr_data is a list of four 100-d vectors
+
+# Just some random data to show off correlation scatterplots
+num_points = 100
+
+def random_row() -> List[float]:
+    row = [0.0, 0, 0, 0]
+    row[0] = random_normal()
+    row[1] = -5 * row[0] + random_normal()
+    row[2] = row[0] + row[1] + 5 * random_normal()
+    row[3] = 6 if row[2] > -2 else 0
+    return row
+
+random.seed(0)
+# each row has 4 points, but really we want the columns
+corr_rows = [random_row() for _ in range(num_points)]
+
+corr_data = [list(col) for col in zip(*corr_rows)]
+
+num_vectors = len(corr_data)
+fig, ax = plt.subplots(num_vectors, num_vectors)
+
+for i in range(num_vectors):
+    for j in range(num_vectors):
+        # Scatter column_j on the x-axis vs. column on the y-axis
+        if i != j: ax[i][j].scatter(corr_data[j], corr_data[i])
+        # Unless i == j, in which case show the series name
+        else: ax[i][j].annotate("series" + str(i), (0.5,0.5),
+                               xycoords = 'axes fraction',
+                               ha = "center", va = "center")
+            
+# Fix the bottom right and top left axis labels, which are wrong because
+    # their charts only have text in them
+ax[-1][-1].set_xlim(ax[0][-1].get_xlim())
+ax[0][0].set_ylim(ax[0][1].get_ylim())
+#plt.show()
