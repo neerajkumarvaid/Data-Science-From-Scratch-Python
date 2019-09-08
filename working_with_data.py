@@ -34,3 +34,26 @@ normal = [57*inverse_normal_cdf(random.random()) for _ in range(10000)]
 
 plot_histogram(uniform, 10, "Uniform Histogram")
 plot_histogram(normal, 10, "Normal Distribution")
+
+def random_normal() -> float:
+    """Returns a random draw from standard normal distribution"""
+    return inverse_normal_cdf(random.random())
+
+xs = [random_normal() for _ in range(1000)]
+ys1 = [x + random_normal()/2 for x in xs]
+ys2 = [-x + random_normal()/2  for x in xs]
+
+plot_histogram(ys1, 0.5, "YS1")
+plot_histogram(ys2, 0.5, "YS2")
+
+plt.scatter(xs, ys1, marker = '.', color = 'red', label = 'ys1')
+plt.scatter(xs, ys2, marker = '.', color = 'green', label = 'ys2')
+plt.xlabel('xs')
+plt.ylabel('ys')
+plt.legend(loc = 9)
+plt.title("Very Different Joint Distributions")
+plt.show()
+
+from statistics import correlation;
+print(correlation(xs,ys1)) # about 0.9
+print(correlation(xs,ys2)) # about -0.9
