@@ -222,3 +222,32 @@ avg_daily_change = {month: sum(change.pct_change for change in changes)/ len(cha
                    for month, changes in changes_by_month.items()}
 
 assert avg_daily_change[10] == max(avg_daily_change.values())
+
+from typing import Tuple
+from vector_operations import vector_mean
+from statistics import standard_deviation
+
+def scale(data: List[Vector]) -> Tuple[Vector, Vector]:
+    """Returns mean and standard deviation of each feature"""
+    dim = len(data[0])
+    means = vector_mean(data)
+    stdevs = [standard_deviation([vector[i] for vector in data])
+             for i in range(dim)]
+    return means, stdevs
+
+def rescale(data: List[Vector]) -> List[Vector]:
+    """Rescales the data so that each feature has
+    mean 0 and standard deviation 1, leaves the
+    feature which has 0 standard deviation."""
+    dim = len(data[0])
+    means, stdevs = scale(data)
+    
+    # Make a copy of each vector
+    rescaled = [v[:] for v in data]
+    
+    for v in rescaled:
+        for i in range(dim):
+            v[i] = (v[i] - means[i])/ stdevs[i]
+            
+    return rescaled
+
