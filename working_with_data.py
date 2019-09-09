@@ -127,3 +127,98 @@ price = StockPrice('MSFT', datetime.date(2018,12, 14), 106.3)
 assert price.symbol == 'MSFT'
 assert price.closing_price == 106.3
 assert price.is_high_tech()
+
+from typing import Optional
+import re
+
+def try_parse_row(row: List[str]) -> Optional[StockPrice]:
+    symbol, date_, closing_price_ = row
+
+    # Stock symbol should be all capital letters
+    if not re.match(r"^[A-Z]+$", symbol):
+        return None
+
+    try:
+        date = parse(date_).date()
+    except ValueError:
+        return None
+
+    try:
+        closing_price = float(closing_price_)
+    except ValueError:
+        return None
+
+    return StockPrice(symbol, date, closing_price)
+
+from dateutil.parser import parse
+import csv
+
+with open("stocks.csv", "r") as f:
+    reader = csv.DictReader(f)
+    rows = [[row['Symbol'], row['Date'], row['Close']]
+            for row in reader]
+
+# skip header
+maybe_data = [try_parse_row(row) for row in rows]
+
+# Make sure they all loaded successfully:
+assert maybe_data
+assert all(sp is not None for sp in maybe_data)
+
+# This is just to make mypy happy
+data = [sp for sp in maybe_data if sp is not None]
+
+max_aapl_price = max(stock_price.closing_price 
+                     for stock_price in data 
+                     if stock_price.symbol == 'AAPL')
+print(max_aapl_price)
+
+from collections import defaultdict
+
+max_prices: Dict[str, float] = defaultdict(lambda: float('-inf'))
+    
+for sp in data:
+    symbol, closing_price = sp.symbol, sp.closing_price
+    
+    if closing_price > max_prices[symbol]:
+        max_prices[symbol] = closing_price
+max_prices
+
+from typing import List
+prices: Dict[str, List[float]] = defaultdict(list)
+
+for sp in data:
+    prices[sp.symbol].append(sp)
+# order (or sort) the prices by date
+prices = {symbol: sorted(symbol_prices) 
+          for symbol, symbol_prices in prices.items()}
+#print(prices)
+
+def pct_change(yesterday: StockPrice, today: StockPrice) -> float:
+    return today.closing_price / yesterday.closing_price - 1
+
+class DailyChange(NamedTuple):
+    symbol: str
+    date: datetime.date
+    pct_change: float
+    
+def day_over_day_changes(prices: List[StockPrice]) -> List[DailyChange]:
+    """Assumes prices are for once stock and are ordered"""
+    return [DailyChange(symbol = today.symbol,
+                           date = today.date,
+                           pct_change = pct_change(yesterday, today))
+            for yesterday, today in zip(prices, prices[1:])]
+
+all_changes = [change for symbol_prices in prices.values()
+              for change in day_over_day_changes(symbol_prices)]
+max_change = max(all_changes, key = lambda change: change.pct_change)
+
+changes_by_month: List[DailyChange] = {month: [] for month in range(1,13)}
+    
+for change in all_changes:
+    changes_by_month[change.date.month].append(change)
+
+avg_daily_change = {month: sum(change.pct_change for change in changes)/ len(changes)
+                   for month, changes in changes_by_month.items()}
+
+assert avg_daily_change[10] == max(avg_daily_change.values())
