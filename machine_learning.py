@@ -21,3 +21,26 @@ train, test = split_data(data, 0.75)
 
 print(len(train))
 print(len(test))
+
+Y = TypeVar('Y') # generic type to represent output variable
+
+def train_test_split(xs: List[X], ys: List[Y], test_pct: float) -> Tuple[List[X], List[X], List[Y], List[Y]]:
+        # Generate indices and split them
+    idxs = [i for i in range(len(xs))]
+    train_idxs, test_idxs = split_data(idxs, 1-test_pct)
+        
+    return ([xs[i] for i in train_idxs], # x_train
+                [xs[i] for i in test_idxs], # x_test
+                [ys[i] for i in train_idxs], # y_train
+                [ys[i] for i in test_idxs])  # y_test
+               
+xs = [x for x in range(1000)]
+ys = [2*x for x in xs]
+
+x_train, x_test, y_train, y_test = train_test_split(xs, ys, 0.25)
+
+print("Number of points in training input =",len(x_train))
+print("Number of points in training output =", len(y_train))
+print("Number of points in testing input =",len(x_test))
+print("Number of points in testing output =", len(y_test))
+
