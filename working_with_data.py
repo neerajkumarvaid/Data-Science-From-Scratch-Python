@@ -377,3 +377,13 @@ pca_data = [
 ]
 
 plt.scatter(*zip(*pca_data))
+
+# Dimentionality reduction by prinicipal component analysis
+from vector_operations import subtract
+def de_mean(data: List[Vector]) -> List[Vector]:
+    """Recenters the data to have 0 mean in every dimension"""
+    mean = vector_mean(data)
+    return [subtract(vector, mean) for vector in data]
+pca_data = de_mean(pca_data)
+
+plt.scatter(*zip(*pca_data))
