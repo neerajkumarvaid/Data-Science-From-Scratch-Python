@@ -44,3 +44,15 @@ print("Number of points in training output =", len(y_train))
 print("Number of points in testing input =",len(x_test))
 print("Number of points in testing output =", len(y_test))
 
+## Some metrics to assess the model accuracy
+def accuracy(tp: int, fp: int, tn: int, fn: int) -> float:
+    return (tp + tn)/ (tp + tn + fp + fn)
+
+def precision(tp: int, fp: int) -> float:
+    return tp / (tp + fp) 
+
+def recall(tp: int, fn: int) -> float:
+    return tp / (tp + fn)
+
+def f1_score(p: float, r: float) -> float:
+    return 2 * p * r / (p + r)
