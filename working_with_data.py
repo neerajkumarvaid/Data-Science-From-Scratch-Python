@@ -427,4 +427,10 @@ def first_principal_component(data: List[Vector],
     return direction(guess)
 
 # directional vetor of the first principal component
-pca1 = first_principal_component(pca_
+pca1 = first_principal_component(pca_data)
+
+ax = plt.axes()
+ax.arrow(-1, -1.0, 8*pca1[0], 8*pca1[1], 
+         head_width=0.5, head_length=0.7, 
+         fc='lightblue', ec='black')
+ax.scatter(*zip(*pca_data))
