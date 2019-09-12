@@ -442,3 +442,14 @@ def project(v: Vector, w: Vector) -> Vector:
     """Return the projection of v onto the direction w"""
     projection_length = dot(v,w)
     return scalar_multiply(projection_length, w)
+
+# For finding other principal components, just remove the projection of 
+# previous previous components from the data matrix
+def remove_projection_from_vector(v: Vector, w: Vector) -> Vector:
+    """projects v onto w and subtracts the projection from v"""
+    return subtract(v,project(v,w))
+
+def remove_projection(data: List[Vector], w: Vector) -> List[Vector]:
+    return [remove_projection_from_vector(v, w) for v in data]
+
+pr_data = remove_projection(pca_data, pca1)
