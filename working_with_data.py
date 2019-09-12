@@ -453,3 +453,4 @@ def remove_projection(data: List[Vector], w: Vector) -> List[Vector]:
     return [remove_projection_from_vector(v, w) for v in data]
 
 pr_data = remove_projection(pca_data, pca1)
+plt.scatter(*zip(*pr_data))
