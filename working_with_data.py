@@ -434,3 +434,11 @@ ax.arrow(-1, -1.0, 8*pca1[0], 8*pca1[1],
          head_width=0.5, head_length=0.7, 
          fc='lightblue', ec='black')
 ax.scatter(*zip(*pca_data))
+
+# First prinical component is the projection of v on the 
+# first principal component direction 
+from vector_operations import scalar_multiply
+def project(v: Vector, w: Vector) -> Vector:
+    """Return the projection of v onto the direction w"""
+    projection_length = dot(v,w)
+    return scalar_multiply(projection_length, w)
