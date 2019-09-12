@@ -387,3 +387,44 @@ def de_mean(data: List[Vector]) -> List[Vector]:
 pca_data = de_mean(pca_data)
 
 plt.scatter(*zip(*pca_data))
+
+from vector_operations import magnitude, dot
+
+def direction(w: Vector) -> Vector:
+    """Computes a unit vector"""
+    mag = magnitude(w)
+    return [w_i / mag for w_i in w]
+
+def directional_variance(data: List[Vector], w: Vector) -> float:
+    """Returns the variace of each vector of data matrix
+    in the direction of vector w"""
+    w_dir = direction(w)
+    return [dot(v,w_dir) ** 2 for v in data]
+
+def directional_variance_gradient(data: List[Vector], w: Vector) -> Vector:
+    """The gradient of directional variance w.r.t v"""
+    w_dir = direction(w)
+    return [sum(2 * dot(v, w_dir) * v[i] for v in data)
+           for i in range(len(w))]
+
+from gradient_descent import gradient_step;
+
+# Use gradient ascent to find the direction that maximizes data varaince
+# gradient ascent will used + step size 
+def first_principal_component(data: List[Vector],
+                              n: int = 100,
+                              step_size: float = 0.1) -> Vector:
+    # Start with a random direction
+    guess = [1.0 for _ in data[0]]
+    
+    with tqdm.trange(n) as t:
+        for _ in t:
+            dv = directional_variance(data, guess)
+            gradient = directional_variance_gradient(data, guess)
+            guess = gradient_step(guess, gradient, step_size)
+            t.set_description(f"dv: {dv}")
+           
+    return direction(guess)
+
+# directional vetor of the first principal component
+pca1 = first_principal_component(pca_
