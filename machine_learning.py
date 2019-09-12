@@ -1,3 +1,9 @@
+"""
+Created on Sun Sep  12 04:36:40 2019
+@author: Neeraj
+Description: Computes model assessment metrics like accuracy, precision, recall and F1-score.
+Reference: Chapter 11 : Machine Learning
+"""
 
 import random
 from typing import List, TypeVar, Tuple
