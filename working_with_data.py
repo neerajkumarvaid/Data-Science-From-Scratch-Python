@@ -1,8 +1,8 @@
 """
 Created on Sun Sep  7 09:54:40 2019
 @author: Neeraj
-Description: This code performs basic hypothesis testing in Python. 
-Reference: Chapter 7 : Hypothesis and Inference
+Description: Demonstrates how to do data correlation, rescaling and dimensionality reduction - PCA algorithm implemented from scratch.
+Reference: Chapter 10 : Working with Data
 """
 from typing import List, Dict
 from collections import Counter
