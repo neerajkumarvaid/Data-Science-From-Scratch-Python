@@ -454,3 +454,17 @@ def remove_projection(data: List[Vector], w: Vector) -> List[Vector]:
 
 pr_data = remove_projection(pca_data, pca1)
 plt.scatter(*zip(*pr_data))
+## Iteratively find multiple principal components from a high-dimensional dataset
+def pca(data: List[Vector], num_components: int) -> List[Vector]:
+    components: List[Vector] = []
+    for _ in range(num_components):
+        component = first_principal_component(data)
+        components.append(component)
+        data = remove_projection(data, component)
+    return components
+
+def transform_vector(v: Vector, components: List[Vector]) -> Vector:
+    return [dot(v,w) for w in components]
+
+def transform(data: List[Vector], components: List[Vector]) -> List[Vector]:
+    return [transform_vector(v, components) for v in data]
