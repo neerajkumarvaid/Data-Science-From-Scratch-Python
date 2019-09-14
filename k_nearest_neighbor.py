@@ -1,3 +1,13 @@
+"""
+Created on Fri Sep 13 23:37:57 2019
+
+@author: Neeraj
+
+Description: Implemention of k-nearest neighbors algorithm from scratch in Python.
+
+Reference: Chapter 12: k-Nearest Neighbors
+"""
+
 from typing import List
 from collections import Counter
 
