@@ -61,4 +61,16 @@ def parse_iris_row(row: List[str]) -> LabeledPoint:
     label = row[-1].split("-")[-1]
     return LabeledPoint(measurements, label)
 
+with open('iris.csv') as csv_file:
+    csv_reader = csv.reader(csv_file, delimiter=',')
+    line_count = 0
+    iris_data = []
+    for row in csv_reader:
+        iris_data.append(row)
+    print(f'Processed {line_count} lines.')
+
+iris_data = iris_data[:-2]
+
+iris_data = [parse_iris_row(row) for row in iris_data]
+#iris_data
 
