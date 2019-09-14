@@ -38,6 +38,8 @@ def knn_classify(k: int,
     # Find the labels for the k closest
     k_nearest_labels = [lp.label for lp in by_distance[:k]]
     
+
+    
     # and let them vote
     return majority_vote(k_nearest_labels)
 
@@ -74,3 +76,29 @@ iris_data = iris_data[:-2]
 iris_data = [parse_iris_row(row) for row in iris_data]
 #iris_data
 
+# group the points by species for plotting
+points_by_species: Dict[str, List[Vector]] = defaultdict(list)
+for iris in iris_data:
+    points_by_species[iris.label].append(iris.point)
+    
+import matplotlib.pyplot as plt
+metrics = ['sepal length', 'sepal width', 'petal length', 'petal width']
+pairs = [(i,j) for i in range(4) for j in range(4) if i < j]
+marks = ['+','.','x'] # 3 markers for our 3 classes
+
+fig, ax = plt.subplots(2,3, figsize=(10, 5))
+
+for row in range(2):
+    for col in range(3):
+        i, j = pairs[3*row + col]
+        ax[row][col].set_title(f"{metrics[i]} vs. {metrics[j]}", fontsize = 8)
+        ax[row][col].set_xticks([])
+        ax[row][col].set_xticks([])
+        
+        for mark, (species, points) in zip(marks, points_by_species.items()):
+            xs = [point[i] for point in points]
+            ys = [point[j] for point in points]
+            ax[row][col].scatter(xs,ys, marker = mark, label = species)
+            
+ax[-1][-1].legend(loc = 'lower right', prop = {'size':6})
+plt.show()
