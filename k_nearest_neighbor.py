@@ -102,3 +102,52 @@ for row in range(2):
             
 ax[-1][-1].legend(loc = 'lower right', prop = {'size':6})
 plt.show()
+
+import random
+from machine_learning import split_data;
+import math
+random.seed(12)
+iris_train, iris_test = split_data(iris_data, 0.70)
+
+assert len(iris_train) == math.floor(0.7*len(iris_data))
+assert len(iris_test) == math.ceil(0.3*len(iris_data))
+
+from typing import Tuple
+
+# track how many times we see (predicted, actual)
+
+confusion_matrix: Dict[Tuple[str, str], int] = defaultdict(int)
+num_correct = 0
+k = 5
+for iris in iris_test:
+    predicted = knn_classify(k, iris_train, iris.point)
+    actual = iris.label
+    
+    if predicted == actual:
+        num_correct += 1
+    
+    confusion_matrix[(predicted, actual)] += 1
+    
+pct_correct = num_correct/ len(iris_test)
+
+print(pct_correct, confusion_matrix)
+
+# curse of dimensionality
+def random_point(dim: int) -> Vector:
+    return [random.random() for _ in range(dim)]
+
+def random_distance(dim: int, num_pairs: int) -> List[float]:
+    return [distance(random_point(dim), random_point(dim)) 
+            for _ in range(num_pairs)]
+import tqdm
+dimensions = range(1,101)
+avg_distances = []
+min_distances = []
+random.seed(0)
+for dim in tqdm.tqdm(dimensions, desc = "Curse of Dimensionality"):
+    distances = random_distance(dim, 10000) # 10,000 random pairs
+    avg_distances.append(sum(distances) / 10000) # track averages
+    min_distances.append(min(distances)) # track minimums
+    
+plt.plot(dimensions, avg_distances)
+
