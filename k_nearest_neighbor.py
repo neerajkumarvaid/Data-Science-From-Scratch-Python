@@ -40,3 +40,25 @@ def knn_classify(k: int,
     
     # and let them vote
     return majority_vote(k_nearest_labels)
+
+# Example on the iris dataset
+import requests
+data = requests.get(
+    "https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data")
+
+with open('iris.csv','w') as f:
+    f.write(data.text)
+data.text
+
+from typing import Dict
+import csv
+from collections import defaultdict
+
+def parse_iris_row(row: List[str]) -> LabeledPoint:
+    """sepal length, sepal width, petal length, petal width, class"""
+    measurements = [float(value) for value in row[:-1]]
+    # class is e.g. "Iris-virginica", we just want "virginica"
+    label = row[-1].split("-")[-1]
+    return LabeledPoint(measurements, label)
+
+
