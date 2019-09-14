@@ -151,3 +151,7 @@ for dim in tqdm.tqdm(dimensions, desc = "Curse of Dimensionality"):
     
 plt.plot(dimensions, avg_distances)
 
+min_avg_ratio = [min_dist / avg_dist 
+                for min_dist, avg_dist in zip(min_distances, avg_distances)]
+plt.plot(dimensions, avg_distances)
+plt.plot(dimensions, min_avg_ratio)
