@@ -16,7 +16,13 @@ class Message(NamedTuple):
     text: str
     is_spam: bool
 
-        from typing import List, Tuple, Dict, Iterable
+from typing import NamedTuple
+
+class Message(NamedTuple):
+    text: str
+    is_spam: bool
+
+from typing import List, Tuple, Dict, Iterable
 import math
 from collections import defaultdict
 class NaiveBayesClassifier:
@@ -32,15 +38,15 @@ class NaiveBayesClassifier:
             if message.is_spam:
                 self.spam_messages += 1
             else:
-                self.ham_massages += 1
+                self.ham_messages += 1
             
-        # increment word counts
-        for token in tokenize(message):
-            self.tokens.add(token)
-            if message.is_spam:
-                self.token_spam_counts += 1
-            else:
-                self.token_ham_counts += 1
+            # increment word counts
+            for token in tokenize(message):
+                self.tokens.add(token)
+                if message.is_spam:
+                    self.token_spam_counts += 1
+                else:
+                    self.token_ham_counts += 1
 
     def _probabilties(self, token:str) -> Tuple[float, float]:
         """Computes P[token/spam] and P[token/ham]"""
