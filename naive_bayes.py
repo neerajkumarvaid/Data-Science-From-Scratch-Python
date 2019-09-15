@@ -34,6 +34,12 @@ class Message(NamedTuple):
     text: str
     is_spam: bool
 
+from typing import NamedTuple
+
+class Message(NamedTuple):
+    text: str
+    is_spam: bool
+
 from typing import List, Tuple, Dict, Iterable
 import math
 from collections import defaultdict
@@ -62,22 +68,22 @@ class NaiveBayesClassifier:
     def _probabilties(self, token:str) -> Tuple[float, float]:
         """Computes P[token/spam] and P[token/ham]"""
         spam = self.token_spam_counts[token]
-        ham = slef.token_ham_counts[token]
+        ham = self.token_ham_counts[token]
     
         p_token_spam = (spam + self.k)/(self.spam_messages + 2*self.k)
-        p_token_ham = (ham + self.k)/(slef.ham_messages + 2*self.k)
+        p_token_ham = (ham + self.k)/(self.ham_messages + 2*self.k)
     
         return p_token_spam, p_token_ham
 
     def predict(self, text: str) -> float:
         text_tokens = tokenize(text) # extract each word from incoming text
         # initialize spam and ham probability to zero
-        log_prob_if_spam = log_prob_if_ham = 0 
+        log_prob_if_spam = log_prob_if_ham = 0.0 
         
         # Iterate through each word in our vocabulary
         for token in self.tokens:
-            prob_if_spam, prob_if_ham = self._probabilities(token)
-            
+            prob_if_spam, prob_if_ham = self._probabilties(token)
+            #print(token, prob_if_spam,prob_if_ham )
             # If *token* appears in the message
             # add the log probability of seeing it
             if token in text_tokens:
@@ -89,14 +95,7 @@ class NaiveBayesClassifier:
                 log_prob_if_spam += math.log(1.0 - prob_if_spam)
                 log_prob_if_ham += math.log(1.0 - prob_if_ham)
             
-            prob_if_spam = math.exp(log_prob_if_spam)
-            prob_if_ham = math.exp(log_prob_if_ham)
+        prob_if_spam = math.exp(log_prob_if_spam)
+        prob_if_ham = math.exp(log_prob_if_ham)
             
-            return prob_if_spam/(prob_if_spam + prob_if_ham)   
-        
-messages = [Message("spam rules", is_spam = True),
-           Message("ham rules", is_spam = False),
-           Message("hello ham", is_spam = False)]
-
-model = NaiveBayesClassifier(k = 0.5)
-model.train(messages)
+        return prob_if_spam/(prob_if_spam + prob_if_ham)     
