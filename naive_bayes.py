@@ -28,6 +28,12 @@ class Message(NamedTuple):
     text: str
     is_spam: bool
 
+from typing import NamedTuple
+
+class Message(NamedTuple):
+    text: str
+    is_spam: bool
+
 from typing import List, Tuple, Dict, Iterable
 import math
 from collections import defaultdict
@@ -45,7 +51,6 @@ class NaiveBayesClassifier:
                 self.spam_messages += 1
             else:
                 self.ham_messages += 1
-            print(message)
             # increment word counts
             for token in tokenize(message.text):
                 self.tokens.add(token)
@@ -87,7 +92,7 @@ class NaiveBayesClassifier:
             prob_if_spam = math.exp(log_prob_if_spam)
             prob_if_ham = math.exp(log_prob_if_ham)
             
-            return prob_if_spam/(prob_if_spam + prob_if_ham)
+            return prob_if_spam/(prob_if_spam + prob_if_ham)   
         
 messages = [Message("spam rules", is_spam = True),
            Message("ham rules", is_spam = False),
