@@ -139,3 +139,40 @@ for filename in FILES:
     # And extract all the files to the output directory
     with tarfile.open(fileobj= fin, mode = 'r:bz2') as tf:
         tf.extractall(OUTPUT_DIR)
+        
+import glob, re
+
+path = "spam_data/*/*"
+data: List[Message] = []
+    
+# glob.glob returns every filename that matches the wildcarded path
+
+for filename in glob.glob(path):
+    is_spam = "ham" not in filename
+    
+    # There are some garbage characters in the emails; the errors = 'ignore'
+    # skips them instead of raising an exception
+    with open(filename, errors = 'ignore') as email_file:
+        for line in email_file:
+            if line.startswith("Subject:"):
+                subject = line.lstrip("Subject: ")
+                data.append(Message(subject, is_spam))
+                break # done with this file
+
+import random
+from machine_learning import split_data;
+
+random.seed(0)
+train_messages, test_messages = split_data(data, 0.75)
+
+model = NaiveBayesClassifier()
+model.train(train_messages)
+
+from collections import Counter
+
+predictions = [(message, model.predict(message.text))
+              for message in test_messages]
+
+confusion_matrix = Counter((message.is_spam, spam_probability > 0.5)
+                          for message, spam_probability in predictions)
+print(confusion_matrix)
