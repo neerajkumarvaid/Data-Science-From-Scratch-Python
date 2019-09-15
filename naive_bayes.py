@@ -176,3 +176,11 @@ predictions = [(message, model.predict(message.text))
 confusion_matrix = Counter((message.is_spam, spam_probability > 0.5)
                           for message, spam_probability in predictions)
 print(confusion_matrix)
+
+def p_spam_given_token(token: str, model: NaiveBayesClassifier) -> float:
+    prob_if_spam, prob_if_ham = model._probabilties(token)
+    return prob_if_spam/ (prob_if_spam + prob_if_ham)
+
+words = sorted(model.tokens, key = lambda t: p_spam_given_token(t,model))
+print("spammiest_words", words[-10:])
+print("hammiest_words", words[:10])
