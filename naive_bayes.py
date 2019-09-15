@@ -1,3 +1,12 @@
+"""
+Created on Sun Sep 15 02:03:39 2019
+
+@author: Neeraj
+
+Description: Implemention of Naive Bayes' algorithm from scratch in Python.
+
+Reference: Chapter 12: Naive Bayes Algorithm
+"""
 
 from typing import Set
 import re
