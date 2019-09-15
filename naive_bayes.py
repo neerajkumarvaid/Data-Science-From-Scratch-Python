@@ -9,3 +9,9 @@ def tokenize(text: str) -> Set[str]:
     return set(all_words)
 
 print(tokenize('Data Science is a science.'))
+
+from typing import NamedTuple
+
+class Message(NamedTuple):
+    text: str
+    is_spam: bool
