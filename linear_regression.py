@@ -49,3 +49,55 @@ daily_hours_good = [dm / 60 for dm in daily_minutes_good]
 alpha, beta = least_squares_fit(num_friends_good, daily_minutes_good)
 
 print(alpha, beta)
+
+from typing import List
+def de_mean(xs: List[float]) -> List[float]:
+    """Translate xs by subtracting its mean (so the result has mean 0)"""
+    x_bar = mean(xs)
+    return [x - x_bar for x in xs]
+
+def total_sum_of_squares(y: Vector) -> float:
+    """the total squared variation of y_i's from their mean"""
+    return sum(v ** 2 for v in de_mean(y))
+
+def r_squared(alpha: float, beta: float, x: Vector, y: Vector) -> float:
+    """The fraction of variation in y captured by the model,
+    which equals 1-the fraction not captured by the model"""
+    return 1.0 - (sum_of_sqerrors(alpha, beta, x, y)
+               /total_sum_of_squares(y))
+
+r_squared(alpha, beta, num_friends_good, daily_minutes_good)
+
+# using gradient descent to solve linear regression problem
+import random
+import tqdm
+from gradient_descent import gradient_step;
+
+num_epochs = 10000
+random.seed(0)
+
+guess = [random.random(), random.random()]
+
+learning_rate = 0.00001
+
+with tqdm.trange(num_epochs) as t:
+    for _ in t:
+        alpha, beta = guess # initial guess
+        
+        # partial derivative of loss wrt alpha
+        grad_a = sum(2 * error(alpha, beta, x_i, y_i)
+                    for x_i, y_i in zip(num_friends_good, daily_minutes_good))
+        
+        # partial derivative of loss wrt beta
+        grad_b = sum(2*error(alpha, beta, x_i, y_i)*x_i
+                    for x_i, y_i in zip(num_friends_good, daily_minutes_good))
+        
+        # computes loss to stick tqdm description
+        loss = sum_of_sqerrors(alpha, beta,
+                              num_friends_good, daily_minutes_good)
+        t.set_description(f"loss: {loss:3f}")
+        
+        # Finally update the guess
+        guess = gradient_step(guess, [grad_a, grad_b], -learning_rate)
+        
+guess
