@@ -1,3 +1,13 @@
+"""
+Created on Mon Sep 16 02:19:00 2019
+
+@author: Neeraj
+
+Description: Implemention of simple linear regression algorithm from scratch in Python.
+
+Reference: Chapter 15: Simple Linear Regression
+"""
+
 def predict(alpha: float, beta: float, x_i: float) -> float:
     return beta * x_i + alpha
 
