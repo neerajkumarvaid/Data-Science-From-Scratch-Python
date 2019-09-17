@@ -38,6 +38,14 @@ def least_squares_fit(xs: List[Vector],
     # start with random guess
     guess = [random.random() for _ in xs[0]]
     
+from linear_regression import total_sum_of_squares;
+def multiple_r_squared(xs: List[Vector], ys: Vector, beta: Vector) -> float:
+    sum_of_squared_errors = sum(error(x,y,beta) ** 2
+                               for x,y in zip(xs,ys))
+    return 1.0 - sum_of_squared_errors/total_sum_of_squares(ys)
+
+print(multiple_r_squared(inputs,daily_minutes_good,beta))
+    
     for _ in tqdm.trange(num_steps, desc = "least squares fit"):
         for start in range(0,len(xs), batch_size):
             batch_xs = xs[start:start+batch_size]
