@@ -23,3 +23,8 @@ def sqerror_gradient(x: Vector, y: float, beta: Vector) -> Vector:
 
 sqerror_gradient(x,y,beta)
 
+from typing import List
+import random
+from vector_operations import vector_mean
+from gradient_descent import gradient_step;
+import tqdm 
