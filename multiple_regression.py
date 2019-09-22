@@ -91,3 +91,18 @@ def multiple_r_squared(xs: List[Vector], ys: Vector, beta: Vector) -> float:
     return 1.0 - sum_of_squared_errors/total_sum_of_squares(ys)
 
 print(multiple_r_squared(inputs,daily_minutes_good,beta))
+
+from typing import TypeVar, List, Callable
+
+X = TypeVar('X') # Generic type for data
+Stat = TypeVar('Stat') # Generic type for statistic
+
+def bootstrap_sample(data: List[X]) -> List[X]:
+    """Randomly samples len(data) elements with replacement"""
+    return [random.choice(data) for _ in data]
+
+def bootstrap_statistic(data: List[X],
+                       stats_fn: Callable[[List[X]], Stat],
+                       num_samples: int) -> List[Stat]:
+    """Evaluates stats_fn on num_samples bootstrap samples from data"""
+    return [stats_fn(bootstrap_sample(data)) for _ in range(num_samples)]
