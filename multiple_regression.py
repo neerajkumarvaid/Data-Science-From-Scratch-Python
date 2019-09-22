@@ -159,3 +159,28 @@ def p_value(beta_hat_j: float, sigma_hat_j: float) -> float:
     
 #p_value(30.58,1.27)
 p_value(0.923,1.249)
+
+## Regularization
+
+def ridge_penalty(beta: Vector,
+                 alpha: float) -> float:
+    return alpha * dot(beta[1:], beta[1:])
+
+def squared_error_ridge(x: Vector,
+                       y: float,
+                       alpha: float) -> float:
+    """estimate error plus ridge penalty"""
+    return error(x,y,beta)**2 + ridge_penalty(beta, alpha)
+
+from vector_operations import add
+def ridge_penality_gradient(beta: Vector, alpha: float) -> float:
+    """gradient of just ridge penality"""
+    return [0.] + [2*alpha*beta_j for beta_j in beta[1:]]
+
+def sqerror_ridge_gradient(x: Vector,
+                          y: float, beta: Vector,
+                          alpha: float) -> Vector:
+    """gradient corresponding to the i-th squared error term
+    including ridge penalty"""
+    return add(sqerror_gradient(x,y,beta), 
+               ridge_penality_gradient(beta, alpha))
