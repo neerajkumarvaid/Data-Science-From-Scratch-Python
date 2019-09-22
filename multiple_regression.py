@@ -206,3 +206,7 @@ def least_squares_fit(xs: List[Vector],
             
             guess = gradient_step(guess, gradient, -learning_rate)
     return guess
+
+random.seed(0)
+beta_0 = least_squares_fit(inputs, daily_minutes_good, 0.0,
+                          learning_rate, 5000,25)
