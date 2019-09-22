@@ -1,3 +1,13 @@
+"""
+Created on Sun Sep 22 00:04:09 2019
+
+@author: Neeraj
+
+Description: Implemention of simple multiple regression algorithm from scratch in Python.
+
+Reference: Chapter 16: Multiple Regression
+"""
+
 from vector_operations import dot, Vector;
 
 def predict(x: Vector, beta: Vector) -> float:
