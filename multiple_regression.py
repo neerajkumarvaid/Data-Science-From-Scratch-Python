@@ -145,3 +145,17 @@ bootstrap_standard_errors = [
     for i in range(4)]
 
 print(bootstrap_standard_errors)
+
+from probability import normal_cdf;
+
+def p_value(beta_hat_j: float, sigma_hat_j: float) -> float:
+    if beta_hat_j > 0:
+        #if the coefficient is positive, we need to compute
+        #twice the probability of seeing an even larger value"""
+        return 2*(1-normal_cdf(beta_hat_j/sigma_hat_j))
+        #"""Otherwise twice the probability of a smaller value"""
+    else:
+        return 2*(normal_cdf(beta_hat_j/sigma_hat_j))
+    
+#p_value(30.58,1.27)
+p_value(0.923,1.249)
