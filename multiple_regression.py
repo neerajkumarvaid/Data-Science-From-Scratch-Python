@@ -210,3 +210,6 @@ def least_squares_fit(xs: List[Vector],
 random.seed(0)
 beta_0 = least_squares_fit(inputs, daily_minutes_good, 0.0,
                           learning_rate, 5000,25)
+
+def lasso_penlty(beta,alpha):
+    return alpha*sum(abs(beta_i) for beta_i in beta[1:])
