@@ -184,3 +184,25 @@ def sqerror_ridge_gradient(x: Vector,
     including ridge penalty"""
     return add(sqerror_gradient(x,y,beta), 
                ridge_penality_gradient(beta, alpha))
+
+def least_squares_fit(xs: List[Vector],
+                     ys: Vector,
+                     alpha: float,
+                     learning_rate: float = 0.001,
+                     num_steps: int = 1000,
+                     batch_size: int = 1) -> Vector:
+    """Finds beta that minimizes the sum of squared errors
+    assuming the model dot(x, beta)"""
+    # start with random guess
+    guess = [random.random() for _ in xs[0]]
+    
+    for _ in tqdm.trange(num_steps, desc = "least squares fit"):
+        for start in range(0,len(xs), batch_size):
+            batch_xs = xs[start:start+batch_size]
+            batch_ys = ys[start:start+batch_size]
+            
+            gradient = vector_mean([sqerror_ridge_gradient(x,y,guess,alpha)
+                                  for x,y in zip(batch_xs, batch_ys)])
+            
+            guess = gradient_step(guess, gradient, -learning_rate)
+    return guess
