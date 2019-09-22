@@ -139,3 +139,9 @@ inputs: List[List[float]] = [[1.,49,4,0],[1,41,9,0],[1,40,8,0],[1,25,6,0],[1,21,
 
 bootstrap_betas = bootstrap_statistic(list(zip(inputs, daily_minutes_good)),
                                      estimate_sample_beta, 100)
+
+bootstrap_standard_errors = [
+    standard_deviation([beta[i] for beta in bootstrap_betas]) 
+    for i in range(4)]
+
+print(bootstrap_standard_errors)
