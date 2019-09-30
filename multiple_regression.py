@@ -5,7 +5,7 @@ Created on Sun Sep 22 00:04:09 2019
 
 Description: Implemention of simple multiple regression algorithm from scratch in Python.
 
-Reference: Chapter 16: Multiple Regression
+Reference: Chapter 15: Multiple Regression
 """
 
 from vector_operations import dot, Vector;
