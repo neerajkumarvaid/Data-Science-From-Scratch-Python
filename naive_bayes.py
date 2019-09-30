@@ -5,7 +5,7 @@ Created on Sun Sep 15 02:03:39 2019
 
 Description: Implemention of Naive Bayes' algorithm from scratch in Python.
 
-Reference: Chapter 12: Naive Bayes Algorithm
+Reference: Chapter 13: Naive Bayes Algorithm
 """
 
 from typing import Set
