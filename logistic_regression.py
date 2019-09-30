@@ -102,5 +102,22 @@ beta_unscaled = [beta[0]
                 beta[1] / stdevs[1],
                 beta[2] / stdevs[2]]
 
+true_positives = false_positives = true_negatives = false_negatives = 0
 
+for x_i, y_i in zip(x_test, y_test):
+    prediction = logistic(dot(beta,x_i))
+    
+    if y_i == 1 and prediction >= 0.5: # TP
+        true_positives += 1
+    elif y_i == 1:
+        false_negatives += 1 # FN
+    elif prediction >= 0.5:
+        false_positives += 1 # FP
+    else:
+        true_negatives += 1   # TN
+        
+precision = true_positives / (true_positives + false_positives)
+recall =  true_positives / (true_positives + false_negatives)
+
+print(f"precision = {precision*100}% , recall = {recall*100}%")
         
