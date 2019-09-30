@@ -121,3 +121,9 @@ recall =  true_positives / (true_positives + false_negatives)
 
 print(f"precision = {precision*100}% , recall = {recall*100}%")
         
+predictions = [logistic(dot(beta, x_i)) for x_i in x_test]
+
+plt.scatter(predictions, y_test, marker = "+")
+plt.xlabel('predicted_probability')
+plt.ylabel('actual label')
+plt.title("Logistic Regression Predicted vs. Actual")
