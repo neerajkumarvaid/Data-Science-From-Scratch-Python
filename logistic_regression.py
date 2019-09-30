@@ -72,3 +72,21 @@ def negative_log_gradient(xs: List[Vector],
     return vector_sum([_negative_log_gradient(x,y,beta)
                      for x,y in zip(xs,ys)])
 
+from machine_learning import train_test_split;
+import random
+import tqdm
+
+random.seed(0)
+x_train, x_test, y_train, y_test = train_test_split(rescaled_xs, ys, 0.33)
+
+learning_rate = 0.001
+
+# pick a random starting point
+beta = [random.random() for _ in range(3)]
+
+with tqdm.trange(5000) as t:
+    for epoch in t:
+        gradient = negative_log_gradient(x_train,y_train, beta)
+        beta = gradient_step(beta, gradient, -learning_rate)
+        loss = negative_log_likelihood(x_train,y_train, beta)
+        t.set_description(f"loss: {loss} beta: {beta}")
