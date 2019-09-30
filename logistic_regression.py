@@ -90,3 +90,17 @@ with tqdm.trange(5000) as t:
         beta = gradient_step(beta, gradient, -learning_rate)
         loss = negative_log_likelihood(x_train,y_train, beta)
         t.set_description(f"loss: {loss} beta: {beta}")
+
+        
+from working_with_data import scale;
+
+means, stdevs = scale(xs)
+
+beta_unscaled = [beta[0]
+                - beta[1] * means[1] / stdevs[1]
+                -beta[2] * means[2] / stdevs[2],
+                beta[1] / stdevs[1],
+                beta[2] / stdevs[2]]
+
+
+        
