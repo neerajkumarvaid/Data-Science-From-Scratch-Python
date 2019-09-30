@@ -18,3 +18,12 @@ plt.xlabel('years of experience')
 plt.ylabel('annual salary')
 plt.legend(loc = 8)
 plt.show()
+
+from working_with_data import rescale;
+from scratch.multiple_regression import least_squares_fit, predict;
+
+from gradient_descent import gradient_step
+
+learning_rate = 0.001
+rescaled_xs = rescale(xs)
+
