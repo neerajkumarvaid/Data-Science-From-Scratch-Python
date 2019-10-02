@@ -96,3 +96,9 @@ def partition_entropy_by(inputs: List[Any],
              for partition in partitions.values()]
     
     return partition_entropy(labels)
+      
+      
+print(partition_entropy_by(inputs, 'level', 'did_well'))
+print(partition_entropy_by(inputs, 'lang', 'did_well'))
+print(partition_entropy_by(inputs, 'tweets', 'did_well'))
+print(partition_entropy_by(inputs, 'phd', 'did_well'))
