@@ -34,3 +34,8 @@ print(f"data_entropy(['a']) = {data_entropy(['a'])}")
 print(f"data_entropy([True, False]) = {data_entropy([True, False])}")
 print(f"data_entropy([3,4,4,4]) = {data_entropy([3,4,4,4])}")
 
+def partition_entropy(subsets: List[List[Any]]) -> float:
+    """Returns the entropy from this partition of data into subsets"""
+    total_count = sum(len(subset) for subset in subsets)
+    return sum(data_entropy(subset) * len(subset) / total_count
+              for subset in subsets)
