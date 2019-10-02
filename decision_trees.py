@@ -1,3 +1,12 @@
+"""
+Created on Wed Oct  2 17:37:37 2019
+
+@author: Neeraj
+
+Description: Implementation of decision tree algorithm from scratch in Python. 
+Reference: Chapter 17 : Decision Trees
+"""
+
 import math
 x = [i/100.0 for i in range(101) ]
 entropy_x = [0] + [-p*math.log(p,2) for p in x if p > 0]
