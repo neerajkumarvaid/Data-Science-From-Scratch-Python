@@ -83,3 +83,16 @@ def partition_by(inputs: List[T], attribute: str) -> Dict[Any, List[T]]:
 partition = partition_by(inputs, 'level')
 print(partition.keys())
 print(partition.values())
+
+def partition_entropy_by(inputs: List[Any], 
+                         attribute: str,
+                         label_attribute: str) -> float:
+    """Compute the entropy according to the given partition."""
+    # partitions consists of our inputs
+    partitions = partition_by(inputs, attribute)
+    
+    # but partition entropy just needs the class labels
+    labels = [[getattr(input, label_attribute) for input in partition]
+             for partition in partitions.values()]
+    
+    return partition_entropy(labels)
