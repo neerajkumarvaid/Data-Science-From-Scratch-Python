@@ -108,3 +108,33 @@ senior_inputs = [input for input in inputs if input.level == 'Senior']
 print(partition_entropy_by(senior_inputs, 'lang', 'did_well'))
 print(partition_entropy_by(senior_inputs, 'tweets', 'did_well'))
 print(partition_entropy_by(senior_inputs, 'phd', 'did_well'))
+
+from typing import Union
+
+class Leaf(NamedTuple):
+    value: Any
+        
+class Split(NamedTuple):
+    attribute: str
+    subtrees: dict
+    default_value: Any = None
+        
+DecisionTree = Union[Leaf, Split]
+
+def classify(tree: DecisionTree, input: Any) -> Any:
+    """Classify the input using a given decision tree"""
+    
+    # If this is a leaf node, return its value
+    if isinstance(tree, Leaf):
+        return tree.value()
+    
+    # Otherwise this tree consists of an attribute to split on
+    # and a dictionary whose keys are values of that attribute
+    # and whose values are subtrees to consider next
+    subtree_key = getattr(input, tree.attribute)
+    
+    if subtree_key not in tree.subtrees: # If no subtree for key
+        return tree.default_value
+    
+    subtree = tree.subtrees[subtree_key] # Use the appropriate subtree
+    return classify(subtree, input) # and use it to classify the input
