@@ -102,3 +102,9 @@ print(partition_entropy_by(inputs, 'level', 'did_well'))
 print(partition_entropy_by(inputs, 'lang', 'did_well'))
 print(partition_entropy_by(inputs, 'tweets', 'did_well'))
 print(partition_entropy_by(inputs, 'phd', 'did_well'))
+
+senior_inputs = [input for input in inputs if input.level == 'Senior']
+
+print(partition_entropy_by(senior_inputs, 'lang', 'did_well'))
+print(partition_entropy_by(senior_inputs, 'tweets', 'did_well'))
+print(partition_entropy_by(senior_inputs, 'phd', 'did_well'))
