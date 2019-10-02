@@ -176,3 +176,12 @@ def build_tree_id3(inputs: List[Any],
     return Split(best_attribute, subtrees, default_value = most_common_label)
 
 
+tree = build_tree_id3(inputs, 
+                      ['level','lang','tweets','phd'],
+                      'did_well')
+
+print(classify(tree, Candidate("Junior", "Java", True, False)))
+
+print(classify(tree, Candidate("Junior", "Java", True, True)))
+
+print(classify(tree, Candidate("Intern", "Java", True, True)))
