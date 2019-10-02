@@ -19,3 +19,18 @@ def entropy(class_probabilities: List[float]) -> float:
 print(f"entropy([1.0]) = {entropy([1.0])}")
 print(f"entropy([0.5, 0.5]) = {entropy([0.5, 0.5])}")
 print(f"entropy([0.25, 0.75]) = {entropy([0.25, 0.75])}")
+
+from typing import Any
+from collections import Counter
+
+def class_probabilities(labels: List[Any]) -> List[float]:
+    total_count = len(labels)
+    return [count / total_count for count in Counter(labels).values()]
+
+def data_entropy(labels: List[Any]) -> float:
+    return entropy(class_probabilities(labels))
+
+print(f"data_entropy(['a']) = {data_entropy(['a'])}")
+print(f"data_entropy([True, False]) = {data_entropy([True, False])}")
+print(f"data_entropy([3,4,4,4]) = {data_entropy([3,4,4,4])}")
+
