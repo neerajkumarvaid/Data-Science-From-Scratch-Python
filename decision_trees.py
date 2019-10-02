@@ -16,3 +16,6 @@ def entropy(class_probabilities: List[float]) -> float:
                 if p > 0) # ignore zero probabilties
   
   
+print(f"entropy([1.0]) = {entropy([1.0])}")
+print(f"entropy([0.5, 0.5]) = {entropy([0.5, 0.5])}")
+print(f"entropy([0.25, 0.75]) = {entropy([0.25, 0.75])}")
