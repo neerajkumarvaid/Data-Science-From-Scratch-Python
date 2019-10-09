@@ -171,3 +171,33 @@ def binary_encode(x: int) -> Vector:
     return binary
 
 binary_encode(3)
+xs = [binary_encode(n) for n in range(101,1024)]
+ys = [fizz_buzz_encode(n) for n in range(101, 1024)]
+
+NUM_HIDDEN = 25 # Number of hidden neurons
+
+network = [# hidden layers: 10 inputs -> NUM_HIDDEN outputs
+    [[random.random() for _ in range(10 + 1)] for _ in range(NUM_HIDDEN)],
+    # Output_layer: NUM_HIDDEN inputs -> 4 outputs
+    [[random.random() for _ in range(NUM_HIDDEN + 1)] for _ in range(4)]
+]
+
+from vector_operations import squared_distance
+
+learning_rate = 1.0
+
+with tqdm.trange(500) as t:
+    for epoch in t:
+        epoch_loss = 0.0
+        
+        for x,y in zip(xs, ys):
+            predicted = feed_forward(network, x)[-1]
+            epoch_loss += squared_distance(predicted, y)
+            gradients = sqerror_gradients(network, x, y)
+            
+            # Take gradient step for each neuron in each layer
+            network = [[gradient_step(neuron, grad, -learning_rate)
+                       for neuron, grad in zip(layer, layer_grad)]
+                      for layer, layer_grad in zip(network, gradients)]
+            
+        t.set_description(f"fizz buzz (loss: {epoch_loss})")
