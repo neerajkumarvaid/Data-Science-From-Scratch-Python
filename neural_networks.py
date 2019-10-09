@@ -162,3 +162,12 @@ print(fizz_buzz_encode(6))
 print(fizz_buzz_encode(25))
 print(fizz_buzz_encode(45))
 
+def binary_encode(x: int) -> Vector:
+    binary: List[float] = []
+        
+    for i in range(10):
+        binary.append(x%2)
+        x = x // 2
+    return binary
+
+binary_encode(3)
