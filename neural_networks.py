@@ -201,3 +201,7 @@ with tqdm.trange(500) as t:
                       for layer, layer_grad in zip(network, gradients)]
             
         t.set_description(f"fizz buzz (loss: {epoch_loss})")
+
+def argmax(xs: list) -> int:
+    """Returns the index of the largest value"""
+    return max(range(len(xs)), key = lambda i: xs[i])
