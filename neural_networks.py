@@ -111,3 +111,37 @@ def sqerror_gradients(network: List[List[Vector]],
                    for i, hidden_neuron in enumerate(network[0])]
     
     return [hidden_grads, output_grads]
+
+# Learn the neural network for XOR operation
+
+import random
+random.seed(0)
+
+# training data
+xs = [[0.,0.],[0.,1.],[1.,0.],[1.,1.]]
+ys = [[0.], [1.], [1.], [0.]]
+
+# start with random weights
+network = [# hidden layer: 2 inputs -> 2 outputs
+            [[random.random() for _ in range(2 + 1)], # 1st hidden neuron
+            [random.random() for _ in range(2 + 1)]], # 2nd hidden neuron
+            # output layer: 2 inputs -> 1 output
+            [[random.random() for _ in range(2 + 1)]] # 1st output neuron
+            ]
+
+from gradient_descent import gradient_step;
+
+learning_rate = 1.0
+
+import tqdm
+
+for epoch in tqdm.trange(20000, desc = "neural net for xor"):
+    for x,y in zip(xs, ys):
+        gradients = sqerror_gradients(network, x, y)
+        
+        # Take a gradient step for each neuron in the layer
+        network = [[gradient_step(neuron, grad, -learning_rate)
+                   for neuron, grad in zip(layer, layer_grad)]
+                  for layer, layer_grad in zip(network, gradients)]
+        
+
