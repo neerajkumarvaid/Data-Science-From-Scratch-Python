@@ -1,3 +1,14 @@
+"""
+Created on Tue Oct  8 22:23:02 2019
+
+@author: Neeraj
+
+Description: Implementation of feed-forward neural networks and backpropagation
+algorithm from scratch in Python. 
+
+Reference: Chapter 18 : Neural Networks
+"""
+
 def step_function(x: float) -> float:
     return 1.0 if x >= 0 else 0.0
 
