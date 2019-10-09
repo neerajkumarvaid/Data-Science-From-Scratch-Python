@@ -29,3 +29,19 @@ not_weights = [-2.]
 not_bias = 1.
 print(f"perceptron_output(not_weights, not_bias, [1]) = {perceptron_output(not_weights, not_bias, [1.])}")
 print(f"perceptron_output(not_weights, not_bias, [0]) = {perceptron_output(not_weights, not_bias, [0.])}")
+
+import math
+
+def sigmoid(t: float) -> float:
+    return 1.0 / (1 + math.exp(-t))
+
+
+t = [i for i in range(-10,11,1)]
+sigmoid_t = [sigmoid(x) for x in t]
+step_t = [step_function(x) for x in t]
+
+import matplotlib.pyplot as plt
+plt.plot(t, sigmoid_t, label = 'sigmoid')
+plt.plot(t, step_t, 'r--', label = 'step function')
+plt.legend()
+plt.show()
