@@ -70,3 +70,14 @@ def feed_forward(neural_network: List[List[Vector]],
         input_vector = output
         
     return outputs
+
+xor_network = [# hidden layer
+              [[-20., 20, -30], # 'and neuron'
+              [20., 20, -10]],   # 'or neuron'
+              # Output layer
+              [[-60., 60., -30.]]]
+
+print(f"feed_forward(xor_network, [1, 1]) = {feed_forward(xor_network, [1, 1])[-1][0]}")
+print(f"feed_forward(xor_network, [0, 1]) = {feed_forward(xor_network, [0, 1])[-1][0]}")
+print(f"feed_forward(xor_network, [1, 0]) = {feed_forward(xor_network, [1, 0])[-1][0]}")
+print(f"feed_forward(xor_network, [0, 0]) = {feed_forward(xor_network, [0, 0])[-1][0]}")
