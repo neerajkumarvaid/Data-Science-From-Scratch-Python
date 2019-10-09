@@ -205,3 +205,17 @@ with tqdm.trange(500) as t:
 def argmax(xs: list) -> int:
     """Returns the index of the largest value"""
     return max(range(len(xs)), key = lambda i: xs[i])
+
+num_correct = 0
+
+for n in range(1,101):
+    x = binary_encode(n)
+    predicted = argmax(feed_forward(network, x)[-1])
+    actual = argmax(fizz_buzz_encode(n))
+    labels = [str(n), "fizz","buzz","fizzbuzz"]
+    print(n, labels[predicted], labels[actual])
+    
+    if predicted == actual:
+        num_correct += 1
+        
+print(num_correct, "/", 100)
