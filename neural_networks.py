@@ -81,3 +81,33 @@ print(f"feed_forward(xor_network, [1, 1]) = {feed_forward(xor_network, [1, 1])[-
 print(f"feed_forward(xor_network, [0, 1]) = {feed_forward(xor_network, [0, 1])[-1][0]}")
 print(f"feed_forward(xor_network, [1, 0]) = {feed_forward(xor_network, [1, 0])[-1][0]}")
 print(f"feed_forward(xor_network, [0, 0]) = {feed_forward(xor_network, [0, 0])[-1][0]}")
+
+def sqerror_gradients(network: List[List[Vector]],
+                     input_vector: Vector,
+                     target_vector: Vector) -> List[List[Vector]]:
+    """Given a neural network, an input vector and a target vector,
+    makes a prediction and computes the gradient of squared error loss
+    with respect to the neuron weights."""
+    
+    # forward pass
+    hidden_outputs, outputs = feed_forward(network, input_vector)
+    
+    # gradients  with respect to output neuron pre-activation outputs
+    output_deltas = [output*(1-output)*(output-target)
+                    for output, target in zip(outputs, target_vector)]
+
+    # gradients with respect to output neuron weights
+    output_grads = [[output_deltas[i] * hidden_output
+                    for hidden_output in hidden_outputs + [1]]
+                    for i, output_neuron in enumerate(network[-1])]
+    
+    # gradients with respect to hidden neuron pre-activation outputs
+    hidden_delats = [hidden_output*(1-hidden_output)*
+                     dot(output_deltas,[n[i] for n in network[-1]])
+                    for i, hidden_output in enumerate(hidden_outputs)]
+
+    # gradients with respect to hidden neuron weights
+    hidden_grads = [[hidden_delats[i] * input for input in input_vector + [1]]
+                   for i, hidden_neuron in enumerate(network[0])]
+    
+    return [hidden_grads, output_grads]
