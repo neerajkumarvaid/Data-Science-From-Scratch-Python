@@ -45,3 +45,28 @@ plt.plot(t, sigmoid_t, label = 'sigmoid')
 plt.plot(t, step_t, 'r--', label = 'step function')
 plt.legend()
 plt.show()
+
+def neuron_output(weights: Vector, inputs: Vector) -> float:
+    """Weights include a bias terms, input includes a 1."""
+    return sigmoid(dot(weights, inputs))
+
+from typing import List
+
+def feed_forward(neural_network: List[List[Vector]],
+                input_vector: Vector) -> List[Vector]:
+    
+    """Feeds the input vector through the neural network.
+    Returns the outputs of all layers (not just the last one)."""
+    
+    outputs: List[Vector] = []
+        
+    for layer in neural_network:
+        input_with_bias = input_vector + [1.0] # Adds a constant for bias
+        output = [neuron_output(input_with_bias, neuron)
+                 for neuron in layer]
+        outputs.append(output)
+        
+        # Then the input to the next layer is the output of this layer
+        input_vector = output
+        
+    return outputs
