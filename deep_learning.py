@@ -39,3 +39,10 @@ def tensor_apply(f: Callable[[float], float], tensor: Tensor) -> Tensor:
     
 print(f"tensor_apply(lambda x: x + 1, [1,2,3]) = {tensor_apply(lambda x: x + 1, [1,2,3])}")
 print(f"tensor_apply(lambda x: 2*x, [[1,2],[3,4]]) = {tensor_apply(lambda x: 2*x, [[1,2],[3,4]])}")
+
+
+def zero_like(tensor: Tensor) -> Tensor:
+    return tensor_apply(lambda _: 0.0, tensor)
+
+print(f"zero_like([1,2,3]) = {zero_like([1,2,3])}")
+print(f"zero_like([[1,2],[3,4]]) = {zero_like([[1,2],[3,4]])}")
