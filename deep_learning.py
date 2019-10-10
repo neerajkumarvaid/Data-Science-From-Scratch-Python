@@ -28,3 +28,14 @@ def tensor_sum(tensor: Tensor) -> float:
         return sum(tensor)
     else:
         return sum(tensor_sum(tensor_i) for tensor_i in tensor)
+
+from typing import Callable
+def tensor_apply(f: Callable[[float], float], tensor: Tensor) -> Tensor:
+    """Applies f element-wise"""
+    if is_1d(tensor):
+        return [f(x) for x in tensor]
+    else:
+        return [tensor_apply(f, tensor_i) for tensor_i in tensor]
+    
+print(f"tensor_apply(lambda x: x + 1, [1,2,3]) = {tensor_apply(lambda x: x + 1, [1,2,3])}")
+print(f"tensor_apply(lambda x: 2*x, [[1,2],[3,4]]) = {tensor_apply(lambda x: 2*x, [[1,2],[3,4]])}")
