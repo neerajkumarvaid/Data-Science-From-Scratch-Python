@@ -46,3 +46,19 @@ def zero_like(tensor: Tensor) -> Tensor:
 
 print(f"zero_like([1,2,3]) = {zero_like([1,2,3])}")
 print(f"zero_like([[1,2],[3,4]]) = {zero_like([[1,2],[3,4]])}")
+
+
+def tensor_combine(f: Callable[[float, float], float],
+                   t1: Tensor,
+                   t2: Tensor) -> Tensor:
+    """Applies f to corresponding elements of t1 and t2"""
+    if is_1d(t1):
+        return [f(x,y) for x,y in zip(t1,t2)]
+    else:
+        return [tensor_combine(f, tensor_i, tensor_j)
+               for tensor_i, tensor_j in zip(t1, t2)]
+    
+import operator
+
+print("tensor_combine(operator.add, [1,2,3], [4,5,6])" +  
+      f" = {tensor_combine(operator.add, [1,2,3], [4,5,6])}")
