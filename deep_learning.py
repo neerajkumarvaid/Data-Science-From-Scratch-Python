@@ -563,3 +563,21 @@ test_labels = mnist.test_labels().tolist()
     
 assert shape(test_images) == [10000, 28, 28]
 assert shape(test_labels) == [10000]
+
+
+# Recenter the images
+    
+# Compute the average pixel value
+avg = tensor_sum(train_images) / 60000 / 28 / 28
+    
+# Recenter, rescale, and flatten
+train_images = [[(pixel - avg) / 256 for row in image for pixel in row]
+                    for image in train_images]
+test_images = [[(pixel - avg) / 256 for row in image for pixel in row]
+                   for image in test_images]
+    
+assert shape(train_images) == [60000, 784], "images should be flattened"
+assert shape(test_images) == [10000, 784], "images should be flattened"
+    
+# After centering, average pixel should be very close to 0
+assert -0.0001 < tensor_sum(train_images) < 0.0001   
