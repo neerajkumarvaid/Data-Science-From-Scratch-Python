@@ -644,3 +644,34 @@ loop(model, train_images, train_labels, loss, optimizer)
 # Test on the test data (no optimizer means just evaluate)
 loop(model, test_images, test_labels, loss)
 
+# A deep neural network for MNIST
+    
+random.seed(0)
+    
+# Name them so we can turn train on and off
+dropout1 = Dropout(0.1)
+dropout2 = Dropout(0.1)
+    
+model = Sequential([
+        Linear(784, 30),  # Hidden layer 1: size 30
+        dropout1,
+        Tanh(),
+        Linear(30, 10),   # Hidden layer 2: size 10
+        dropout2,
+        Tanh(),
+        Linear(10, 10)    # Output layer: size 10
+    ])
+    
+    
+# Training the deep model for MNIST
+    
+optimizer = Momentum(learning_rate=0.01, momentum=0.99)
+loss = SoftmaxCrossEntropy()
+    
+# Enable dropout and train (takes > 20 minutes on my laptop!)
+dropout1.train = dropout2.train = True
+loop(model, train_images, train_labels, loss, optimizer)
+    
+# Disable dropout and evaluate
+dropout1.train = dropout2.train = False
+loop(model, test_images, test_labels, loss)
