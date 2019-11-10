@@ -471,3 +471,17 @@ class SoftmaxCrossEntropy(Loss):
     
         return tensor_combine(lambda p, actual: p-actual,
                          probabilities, actual)
+
+    
+    
+random.seed(0)
+    
+net = Sequential([
+        Linear(input_dim=10, output_dim=NUM_HIDDEN, init='uniform'),
+        Tanh(),
+        Linear(input_dim=NUM_HIDDEN, output_dim=4, init='uniform')
+        # No final sigmoid layer now
+    ])
+    
+optimizer = Momentum(learning_rate=0.1, momentum=0.9)
+loss = SoftmaxCrossEntropy()    
