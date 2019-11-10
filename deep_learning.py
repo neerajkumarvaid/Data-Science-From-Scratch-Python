@@ -449,3 +449,25 @@ def softmax(tensor: Tensor) -> Tensor:
         return [exp_i/sum_of_exps for exp_i in exps] # Probability is of total weight             
 
 
+class SoftmaxCrossEntropy(Loss):
+    """
+    This is the negative-log-likelihood of the obeserved values, 
+    given the network model. So if we choose weights to minimize it,
+    our model will be maximizing the likelihood of the observed data."""
+    
+    def loss(self, predicted: Tensor, actual: Tensor) -> float:
+        # Apply softmax to get the probabilities
+        probabilties = softmax(predicted)
+        
+        # This will be log p_i for the actual class i and 0 for the other
+        # classes. We add a tiny amount to p to avoid taking log(0)
+        likelihoods = tensor_combine(lambda p, act: math.log(p + 1e-30)*act,
+                                    probabilties, actual)
+        # And then we just sum up the negatives
+        return -tensor_sum(likelihoods)
+   
+    def gradient(self, predicted: Tensor, actual: Tensor) -> Tensor:
+        probabilities = softmax(predicted)
+    
+        return tensor_combine(lambda p, actual: p-actual,
+                         probabilities, actual)
