@@ -235,3 +235,37 @@ xor_net = Sequential([
     Linear(input_dim = 2, output_dim = 1),
     Sigmoid()
 ])    
+
+
+
+class Loss:
+    def loss(self, predicted: Tensor, actual: Tensor) -> float:
+        """How good are our predictions? (Larger numbers are worse.)"""
+        raise NotImplementedError
+
+    def gradient(self, predicted: Tensor, actual: Tensor) -> Tensor:
+        """How does the loss change as the predictions change?"""
+        raise NotImplementedError
+
+class SSE(Loss):
+    """Loss function that computes the sum of the squared errors."""
+    def loss(self, predicted: Tensor, actual: Tensor) -> float:
+        # Compute the tensor of squared differences
+        squared_errors = tensor_combine(
+            lambda predicted, actual: (predicted - actual) ** 2,
+            predicted,
+            actual)
+
+        # And just add them up
+        return tensor_sum(squared_errors)
+
+    def gradient(self, predicted: Tensor, actual: Tensor) -> Tensor:
+        return tensor_combine(
+            lambda predicted, actual: 2 * (predicted - actual),
+            predicted,
+            actual)
+
+
+sse_loss = SSE()
+print(sse_loss.loss([1, 2, 3], [10, 20, 30]))
+print(sse_loss.gradient([1, 2, 3], [10, 20, 30]))
