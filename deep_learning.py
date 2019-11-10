@@ -485,3 +485,19 @@ net = Sequential([
     
 optimizer = Momentum(learning_rate=0.1, momentum=0.9)
 loss = SoftmaxCrossEntropy()    
+
+
+with tqdm.trange(100) as t:
+        for epoch in t:
+            epoch_loss = 0.0
+    
+            for x, y in zip(xs, ys):
+                predicted = net.forward(x)
+                epoch_loss += loss.loss(predicted, y)
+                gradient = loss.gradient(predicted, y)
+                net.backward(gradient)
+    
+                optimizer.step(net)
+    
+            accuracy = fizzbuzz_accuracy(101, 1024, net)
+            t.set_description(f"fb loss: {epoch_loss:.3f} acc: {accuracy:.2f}")
