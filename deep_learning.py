@@ -554,3 +554,12 @@ for i in range(10):
         ax[i][j].yaxis.set_visible(False)
     
 # plt.show()            
+
+
+# Load the MNIST test data
+    
+test_images = mnist.test_images().tolist()
+test_labels = mnist.test_labels().tolist()
+    
+assert shape(test_images) == [10000, 28, 28]
+assert shape(test_labels) == [10000]
