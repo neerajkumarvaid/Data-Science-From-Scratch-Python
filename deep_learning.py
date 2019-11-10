@@ -347,3 +347,7 @@ with tqdm.trange(3000) as t:
             optimizer.step(net)
     
         t.set_description(f"xor loss {epoch_loss:.3f}")            
+
+        
+for param in net.params():
+    print(param)        
