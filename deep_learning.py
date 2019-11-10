@@ -289,3 +289,31 @@ class GradientDescent(Optimizer):
                 lambda param, grad: param - grad * self.lr,
                 param,
                 grad)
+
+class Momentum(Optimizer):
+    def __init__(self,
+                 learning_rate: float,
+                 momentum: float = 0.9) -> None:
+        self.lr = learning_rate
+        self.mo = momentum
+        self.updates: List[Tensor] = []  # running average
+
+    def step(self, layer: Layer) -> None:
+        # If we have no previous updates, start with all zeros.
+        if not self.updates:
+            self.updates = [zero_like(grad) for grad in layer.grads()]
+
+        for update, param, grad in zip(self.updates,
+                                       layer.params(),
+                                       layer.grads()):
+            # Apply momentum
+            update[:] = tensor_combine(
+                lambda u, g: self.mo * u + (1 - self.mo) * g,
+                update,
+                grad)
+
+            # Then take a gradient step
+            param[:] = tensor_combine(
+                lambda p, u: p - self.lr * u,
+                param,
+                update)            
