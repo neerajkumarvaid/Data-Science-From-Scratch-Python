@@ -269,3 +269,23 @@ class SSE(Loss):
 sse_loss = SSE()
 print(sse_loss.loss([1, 2, 3], [10, 20, 30]))
 print(sse_loss.gradient([1, 2, 3], [10, 20, 30]))
+
+class Optimizer:
+    """
+    An optimizer updates the weights of a layer (in place) using information
+    known by either the layer or the optimizer (or by both).
+    """
+    def step(self, layer: Layer) -> None:
+        raise NotImplementedError
+
+class GradientDescent(Optimizer):
+    def __init__(self, learning_rate: float = 0.1) -> None:
+        self.lr = learning_rate
+
+    def step(self, layer: Layer) -> None:
+        for param, grad in zip(layer.params(), layer.grads()):
+            # Update param using a gradient step
+            param[:] = tensor_combine(
+                lambda param, grad: param - grad * self.lr,
+                param,
+                grad)
