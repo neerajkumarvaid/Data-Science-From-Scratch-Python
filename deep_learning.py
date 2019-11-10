@@ -595,3 +595,52 @@ test_labels = [one_hot_encode(label) for label in test_labels]
     
 assert shape(train_labels) == [60000, 10]
 assert shape(test_labels) == [10000, 10]
+
+ # Training loop
+    
+import tqdm
+    
+def loop(model: Layer,
+            images: List[Tensor],
+             labels: List[Tensor],
+             loss: Loss,
+             optimizer: Optimizer = None) -> None:
+    correct = 0         # Track number of correct predictions.
+    total_loss = 0.0    # Track total loss.
+    
+    with tqdm.trange(len(images)) as t:
+        for i in t:
+            predicted = model.forward(images[i])             # Predict.
+            if argmax(predicted) == argmax(labels[i]):       # Check for
+                correct += 1                                 # correctness.
+            total_loss += loss.loss(predicted, labels[i])    # Compute loss.
+    
+            # If we're training, backpropagate gradient and update weights.
+            if optimizer is not None:
+                gradient = loss.gradient(predicted, labels[i])
+                model.backward(gradient)
+                optimizer.step(model)
+    
+            # And update our metrics in the progress bar.
+            avg_loss = total_loss / (i + 1)
+            acc = correct / (i + 1)
+            t.set_description(f"mnist loss: {avg_loss:.3f} acc: {acc:.3f}")
+    
+    
+# The logistic regression model for MNIST
+    
+random.seed(0)
+    
+# Logistic regression is just a linear layer followed by softmax
+model = Linear(784, 10)
+loss = SoftmaxCrossEntropy()
+    
+# This optimizer seems to work
+optimizer = Momentum(learning_rate=0.01, momentum=0.99)
+    
+# Train on the training data
+loop(model, train_images, train_labels, loss, optimizer)
+    
+# Test on the test data (no optimizer means just evaluate)
+loop(model, test_images, test_labels, loss)
+
