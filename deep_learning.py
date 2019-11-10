@@ -581,3 +581,17 @@ assert shape(test_images) == [10000, 784], "images should be flattened"
     
 # After centering, average pixel should be very close to 0
 assert -0.0001 < tensor_sum(train_images) < 0.0001   
+
+
+# One-hot encode the test data
+def one_hot_encode(i: int, num_labels: int = 10) -> List[float]:
+    return [1.0 if j == i else 0.0 for j in range(num_labels)]
+
+assert one_hot_encode(3) == [0, 0, 0, 1, 0, 0, 0, 0, 0, 0]
+assert one_hot_encode(2, num_labels=5) == [0, 0, 1, 0, 0]
+    
+train_labels = [one_hot_encode(label) for label in train_labels]
+test_labels = [one_hot_encode(label) for label in test_labels]
+    
+assert shape(train_labels) == [60000, 10]
+assert shape(test_labels) == [10000, 10]
