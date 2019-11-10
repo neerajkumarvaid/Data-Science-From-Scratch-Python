@@ -376,3 +376,13 @@ class Tanh(Layer):
         return tensor_combine(
         lambda tanh, grad: (1- tanh**2)*grad,
         self.tanh, gradient)    
+
+class Relu(Layer):
+    def forward(self, input: Tensor) -> Tensor:
+        self.input = input
+        return tensor_apply(lambda x: max(x,0), input)
+    
+    def backward(self, gradient: Tensor) -> Tensor:
+        return tensor_combine(lambda x, grad: grad if x > 0 else 0,
+                             self.input,
+                             gradient)    
