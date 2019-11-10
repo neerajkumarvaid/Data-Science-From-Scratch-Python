@@ -392,3 +392,50 @@ from neural_networks import binary_encode, fizz_buzz_encode, argmax
 
 xs  = [binary_encode(n) for n in range(101, 1024)]
 ys = [fizz_buzz_encode(n) for n in range(101, 1024)]    
+
+NUM_HIDDEN = 25
+random.seed(0)
+
+net = Sequential([
+    Linear(input_dim = 10, output_dim = NUM_HIDDEN, init = 'uniform'),
+    Tanh(),
+    Linear(input_dim = NUM_HIDDEN, output_dim = 4, init = 'uniform'),
+    Sigmoid()
+
+])
+
+
+def fizzbuzz_accuracy(low: int, hi: int, net: Layer) -> float:
+    num_correct = 0
+    
+    for n in range(low, hi):
+        x = binary_encode(n)
+        predicted = argmax(net.forward(x))
+        actual = argmax(fizz_buzz_encode(n))
+        if predicted == actual:
+            num_correct += 1
+        
+    return num_correct/(hi - low)
+
+optimizer = Momentum(learning_rate = 0.1, momentum = 0.9)
+loss = SSE()
+
+with tqdm.trange(1000) as t:
+    for epoch in t:
+        epoch_loss = 0.0
+        
+        for x,y in zip(xs, ys):
+            predicted = net.forward(x)
+            epoch_loss += loss.loss(predicted, y)
+            gradient = loss.gradient(predicted, y)
+            net.backward(gradient)
+            
+            optimizer.step(net)
+        
+        accuracy = fizzbuzz_accuracy(101, 1024, net)
+        t.set_description(f"fb loss: {epoch_loss} acc: {accuracy}")
+        
+        
+        
+
+
