@@ -351,3 +351,28 @@ with tqdm.trange(3000) as t:
         
 for param in net.params():
     print(param)        
+
+    
+    
+import math
+
+def tanh(x: float) -> float:
+    # If x is very large or very small, tanh is (essentially) 1 or -1
+    # We check for this because, e.g., math.exp(1000) raises an error.
+    
+    if  x < -100: return -1
+    elif x > 100: return 1
+    
+    em2x = math.exp(-2*x)
+    return (1-em2x)/(1 + em2x)
+
+class Tanh(Layer):
+    def forward(self, input: Tensor) -> Tensor:
+        # Save tanh output to use it in backpropagation
+        self.tanh = tensor_apply(tanh, input)
+        return self.tanh
+    
+    def backward(self, gradient: Tensor) -> Tensor:
+        return tensor_combine(
+        lambda tanh, grad: (1- tanh**2)*grad,
+        self.tanh, gradient)    
