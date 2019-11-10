@@ -436,6 +436,16 @@ with tqdm.trange(1000) as t:
         t.set_description(f"fb loss: {epoch_loss} acc: {accuracy}")
         
         
+import math
+
+def softmax(tensor: Tensor) -> Tensor:
+    """Softmax along the last dimension"""
+    if is_1d(tensor):
+        # Subtract the largest value for numerical stability
+        largest = max(tensor)
+        exps = [math.exp(x - largest) for x in tensor]
         
+        sum_of_exps = sum(exps) # this the total "weight"
+        return [exp_i/sum_of_exps for exp_i in exps] # Probability is of total weight             
 
 
