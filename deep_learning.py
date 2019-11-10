@@ -529,4 +529,28 @@ class Dropout(Layer):
             raise RuntimeError("don't call backward when not in train mode")
 
 
-            
+ # This will download the data, change this to where you want it.
+    # (Yes, it's a 0-argument function, that's what the library expects.)
+    # (Yes, I'm assigning a lambda to a variable, like I said never to do.)
+mnist.temporary_dir = lambda: '/tmp'
+    
+    # Each of these functions first downloads the data and returns a numpy array.
+    # We call .tolist() because our "tensors" are just lists.
+train_images = mnist.train_images().tolist()
+train_labels = mnist.train_labels().tolist()
+    
+assert shape(train_images) == [60000, 28, 28]
+assert shape(train_labels) == [60000]
+    
+import matplotlib.pyplot as plt
+    
+fig, ax = plt.subplots(10, 10)
+    
+for i in range(10):
+    for j in range(10):
+        # Plot each image in black and white and hide the axes.
+        ax[i][j].imshow(train_images[10 * i + j], cmap='Greys')
+        ax[i][j].xaxis.set_visible(False)
+        ax[i][j].yaxis.set_visible(False)
+    
+# plt.show()            
