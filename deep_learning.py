@@ -675,3 +675,10 @@ loop(model, train_images, train_labels, loss, optimizer)
 # Disable dropout and evaluate
 dropout1.train = dropout2.train = False
 loop(model, test_images, test_labels, loss)
+
+import json
+
+def save_weights(model: Layer, filename: str) -> None:
+    weights = list(model.params())
+    with open(filename, 'w') as f:
+        json.dump(weights, f) 
