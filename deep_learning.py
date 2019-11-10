@@ -386,3 +386,9 @@ class Relu(Layer):
         return tensor_combine(lambda x, grad: grad if x > 0 else 0,
                              self.input,
                              gradient)    
+
+    
+from neural_networks import binary_encode, fizz_buzz_encode, argmax
+
+xs  = [binary_encode(n) for n in range(101, 1024)]
+ys = [fizz_buzz_encode(n) for n in range(101, 1024)]    
