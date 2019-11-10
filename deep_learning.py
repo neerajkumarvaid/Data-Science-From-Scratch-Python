@@ -100,3 +100,19 @@ class Layer:
         Returns the gradients, in the same order as params()
         """
         return ()
+    
+    
+from neural_networks import sigmoid
+
+class Sigmoid(Layer):
+    
+    def forward(self, input: Tensor) -> Tensor:
+        """Applies sigmoid to each element of the input tensor,
+        and save the results to use in backpropagation."""
+        self.sigmoids = tensor_apply(sigmoid,input)
+        return self.sigmoids
+    
+    def backward(self, gradient: Tensor) -> Tensor:
+        return tensor_combine(lambda sig, grad: sig * (1 - sig) * grad,
+                             self.sigmoids,
+                             gradient)
