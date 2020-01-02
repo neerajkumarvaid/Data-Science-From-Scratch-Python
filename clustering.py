@@ -68,3 +68,18 @@ class kMeans:
                 assignments = new_assignments
                 self.means = cluster_means(self.k, inputs, assignments)
                 t.set_description(f"changed: {num_changed}/{len(inputs)}")
+
+# Example: meetups
+
+inputs: List[List[float]] = [[-14,-5],[13,13],[20,23],[-19,-11],[-9,-16],[21,27],[-49,15],[26,13],[-46,5],[-34,-1],[11,15],[-49,0],[-22,-16],[19,28],[-12,-8],[-13,-19],[-41,8],[-11,-6],[-25,-9],[-18,-3]]
+
+random.seed(12)
+clusterer = kMeans(k = 3)
+clusterer.train(inputs)
+
+means = sorted(clusterer.means) # sort for the unit test
+
+# Check that the means are close to what we expect
+assert squared_distance(means[0], [-44, 5]) < 1
+assert squared_distance(means[1], [-16, -10]) < 1
+assert squared_distance(means[2], [18, 20]) < 1   
