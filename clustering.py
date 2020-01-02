@@ -113,3 +113,11 @@ def squared_clustering_errors(inputs: List[Vector], k: int) -> float:
 
 ks = range(1, len(inputs) + 1)
 errors = [squared_clustering_errors(inputs, k) for k in ks]
+
+
+plt.plot(ks,errors)
+plt.xticks(ks)
+plt.xlabel("k")
+plt.ylabel("total squared error")
+plt.title("Total Error vs. # of clusters")
+plt.show()
