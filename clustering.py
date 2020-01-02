@@ -95,3 +95,16 @@ means = sorted(clusterer.means)
 assert len(means) == 2
 assert squared_distance(means[0], [-26, -5]) < 1
 assert squared_distance(means[1], [18, 20]) < 1
+
+
+from matplotlib import pyplot as plt
+
+def squared_clustering_errors(inputs: List[Vector], k: int) -> float:
+    """finds the total squared error from the k-means clustering of inputs"""
+    clusterer = kMeans(k)
+    clusterer.train(inputs)
+    means = clusterer.means
+    assignments = [clusterer.classify(input) for input in inputs]
+    
+    return sum(squared_distance(input, means[cluster]) 
+               for input, cluster in zip(inputs, assignments))
