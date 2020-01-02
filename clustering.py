@@ -31,3 +31,40 @@ def cluster_means(k: int,
     # if cluster is empty then just use a random point
     return [vector_mean(cluster) if cluster else random.choice(inputs)
             for cluster in clusters]
+
+import itertools
+import tqdm
+from vector_operations import squared_distance
+
+class kMeans:
+    def __init__(self, k: int) -> None:
+        self.k = k # number of clusters
+        self.means = None
+        
+    def classify(self, input: Vector)->int:
+        """Return the index of the cluster closest to the input"""
+        return min(range(self.k),
+                   key = lambda i: squared_distance(input,self.means[i]))
+    
+    def train(self, inputs: List[Vector]) -> None:
+        # Start with random assignments
+        assignments = [random.randrange(self.k) for _ in inputs]
+        #print(inputs[:10])
+        #print(assignments[:10])
+        with tqdm.tqdm(itertools.count()) as t:
+            for _ in t:
+                # Compute means and find new assignments
+                self.means = cluster_means(self.k, inputs, assignments)
+                #print(self.means)
+                new_assignments = [self.classify(input) for input in inputs]
+                
+                # Check how many assignments changed and if we are done
+                
+                num_changed = num_differences(assignments, new_assignments)
+                
+                if num_changed == 0:
+                    return
+                # Otherwise keep the new assignments and compute new means
+                assignments = new_assignments
+                self.means = cluster_means(self.k, inputs, assignments)
+                t.set_description(f"changed: {num_changed}/{len(inputs)}")
