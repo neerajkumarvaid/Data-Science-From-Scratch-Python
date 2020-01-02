@@ -83,3 +83,15 @@ means = sorted(clusterer.means) # sort for the unit test
 assert squared_distance(means[0], [-44, 5]) < 1
 assert squared_distance(means[1], [-16, -10]) < 1
 assert squared_distance(means[2], [18, 20]) < 1   
+
+
+
+random.seed(12)
+clusterer = kMeans(k = 2)
+clusterer.train(inputs)
+
+
+means = sorted(clusterer.means)
+assert len(means) == 2
+assert squared_distance(means[0], [-26, -5]) < 1
+assert squared_distance(means[1], [18, 20]) < 1
