@@ -108,3 +108,8 @@ def squared_clustering_errors(inputs: List[Vector], k: int) -> float:
     
     return sum(squared_distance(input, means[cluster]) 
                for input, cluster in zip(inputs, assignments))
+
+# now plot from 1 up to len(inputs) clusters
+
+ks = range(1, len(inputs) + 1)
+errors = [squared_clustering_errors(inputs, k) for k in ks]
