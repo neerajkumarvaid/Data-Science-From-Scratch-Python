@@ -149,3 +149,16 @@ def get_values(cluster: Cluster) -> List[Vector]:
                for value in get_values(child)]
     
 print(f"get_values(merged) = {get_values(merged)}")
+
+from typing import Callable
+from vector_operations import distance
+
+def cluster_distance(cluster1: Cluster,
+                    cluster2: Cluster,
+                    distance_agg: Callable = min) -> float:
+    """Compute all the pairwise distances between cluster1 and cluster2 and apply the aggregation function
+    _distance_agg_ to the resulting list"""
+    
+    return distance_agg([distance(v1,v2)]
+                       for v1 in get_values(cluster1)
+                       for v2 in get_values(cluster2))
