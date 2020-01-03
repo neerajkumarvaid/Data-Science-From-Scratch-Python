@@ -121,3 +121,21 @@ plt.xlabel("k")
 plt.ylabel("total squared error")
 plt.title("Total Error vs. # of clusters")
 plt.show()
+
+
+# Hierarchical Clustering
+rom typing import NamedTuple, Union, List
+from vector_operations import Vector
+class Leaf(NamedTuple):
+    value: Vector
+
+leaf1 = Leaf([10, 20])
+leaf2 = Leaf([30, -15])
+
+class Merged(NamedTuple):
+    children: tuple
+    order: int
+        
+merged = Merged((leaf1, leaf2), order = 1)
+
+Cluster = Union[Leaf, Merged]
