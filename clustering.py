@@ -210,3 +210,20 @@ def bottom_up_cluster(inputs: List[Vector],
 inputs: List[List[float]] = [[-14,-5],[13,13],[20,23],[-19,-11],[-9,-16],[21,27],[-49,15],[26,13],[-46,5],[-34,-1],[11,15],[-49,0],[-22,-16],[19,28],[-12,-8],[-13,-19],[-41,8],[-11,-6],[-25,-9],[-18,-3]]
 
 base_cluster = bottom_up_cluster(inputs)
+
+def generate_clusters(base_cluster: Cluster,
+                     num_clusters: int) -> List[Cluster]:
+    # start with a list with just the base cluster
+    clusters = [base_cluster]
+    
+    # as long as we don't have enough clusters yet...
+    while len(clusters) < num_clusters:
+        # choose the last merged of our clusters
+        next_cluster = min(clusters, key = get_merge_order)
+        clusters = [c for c in clusters if c != next_cluster]
+        
+        # and add its children to the list (i.e. unmerge it)
+        clusters.extend(get_children(next_cluster))
+        
+    # once we have enough clusters, return those
+    return clusters
