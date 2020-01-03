@@ -139,3 +139,13 @@ class Merged(NamedTuple):
 merged = Merged((leaf1, leaf2), order = 1)
 
 Cluster = Union[Leaf, Merged]
+
+def get_values(cluster: Cluster) -> List[Vector]:
+    if isinstance(cluster, Leaf):
+        return [cluster.value]
+    else:
+        return [value
+               for child in cluster.children
+               for value in get_values(child)]
+    
+print(f"get_values(merged) = {get_values(merged)}")
