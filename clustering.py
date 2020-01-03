@@ -227,3 +227,24 @@ def generate_clusters(base_cluster: Cluster,
         
     # once we have enough clusters, return those
     return clusters
+
+
+three_clusters = [get_values(cluster) for cluster in generate_clusters(base_cluster, 3)]
+from matplotlib import pyplot as plt
+
+
+for i, cluster, marker, color in zip([1,2,3],
+                                    three_clusters,
+                                    ['D','o', '*'],
+                                    ['r','g','b']):
+    xs, ys = zip(*cluster) # magic unzipping trick
+    plt.scatter(xs, ys, color = color, marker = marker)
+    
+    # put a number at the mean of a cluster
+    x,y = vector_mean(cluster)
+    plt.plot(x,y, marker = '$' + str(i) + '$', color = 'black')
+    
+plt.title("User Locations -- 3 Bottom-up Clusters, Min")
+plt.xlabel("blocks east of city center")
+plt.ylabel("blocks north of city center")
+plt.show()
