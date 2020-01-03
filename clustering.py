@@ -168,3 +168,11 @@ def get_merge_order(cluster: Cluster) -> float:
         return float('inf') # was never merged
     else:
         return cluster.order
+
+from typing import Tuple
+
+def get_children(cluster: Cluster):
+    if isinstance(cluster, Leaf):
+        return TypeError("Leaf has no children")
+    else:
+        return cluster.children
