@@ -176,3 +176,33 @@ def get_children(cluster: Cluster):
         return TypeError("Leaf has no children")
     else:
         return cluster.children
+
+    
+def bottom_up_cluster(inputs: List[Vector],
+                     distance_agg: Callable = min) -> Cluster:
+    # Start with all leaves
+    clusters: List[Cluster] = [Leaf(input) for input in inputs]
+        
+    def pair_distance(pair: Tuple[Cluster, Cluster]) -> float:
+        return cluster_distance(pair[0], pair[1], distance_agg)
+    
+    # as long as we have more than one cluster left...
+    while len(clusters) > 1:
+        # find two closest clusters
+        c1, c2 = min(((cluster1, cluster2)
+                     for i, cluster1 in enumerate(clusters)
+                     for cluster2 in clusters[:i]),
+                     key = pair_distance)
+        
+        # remove them from the list of clusters
+        clusters = [c for c in clusters if c != c1 and c != c2]
+        
+        # merge them using merge_order = # of clusters left
+        
+        merged_cluster = Merged((c1,c2), order = len(clusters))
+        
+        # and add their merge
+        clusters.append(merged_cluster)
+        
+    # when there is only one cluster left, return it
+    return clusters[0]
