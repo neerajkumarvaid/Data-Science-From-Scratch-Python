@@ -162,3 +162,9 @@ def cluster_distance(cluster1: Cluster,
     return distance_agg([distance(v1,v2)]
                        for v1 in get_values(cluster1)
                        for v2 in get_values(cluster2))
+
+def get_merge_order(cluster: Cluster) -> float:
+    if isinstance(cluster, Leaf):
+        return float('inf') # was never merged
+    else:
+        return cluster.order
