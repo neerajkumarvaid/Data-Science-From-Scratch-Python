@@ -6,6 +6,8 @@ Description: This file contains an impelementation of natural language processin
 topic modeling, etc. from scratch in Python. It also contains code to generate word clouds.
 Reference: Chapter 21 Natural Language Processing
 """
+
+
 data = [ ("big data", 100, 15), ("Hadoop", 95, 25), ("Python", 75, 50),
          ("R", 50, 40), ("machine learning", 80, 20), ("statistics", 20, 60),
          ("data science", 60, 70), ("analytics", 90, 3),
@@ -54,3 +56,31 @@ plt.axis([0, 100, 0, 100])
 plt.xticks([])
 plt.yticks([])
 plt.show()
+
+
+# replace Unicode apostrophies in text with normal apostrophies
+def fix_unicode(text: str) -> str:
+    return text.replace(u"\u2019","'")
+
+# split the text into a sequence of words and periods 
+# (so that we know where the sentence ends)
+
+import re
+from bs4 import BeautifulSoup
+import requests
+
+# get the text from a particular url
+url = "https://www.oreilly.com/ideas/what-is-data-science"
+html = requests.get(url).text
+soup = BeautifulSoup(html, 'html5lib')
+
+# find post-radar-content div
+content = soup.find("div", "post-radar-content") 
+regex = r"[\w']+|[\.]" # matches a word or a period
+
+document = []
+
+# find unique words in each paragraph
+for paragraph in content("p"):
+    words = re.findall(regex, fix_unicode(paragraph.text))
+    document.extend(words)
