@@ -91,3 +91,12 @@ transitions =  defaultdict(list)
 for prev, current in zip(document, document[1:]):
     transitions[prev].append(current)
 
+
+def generate_using_bigrams() -> str:
+    current = "." # this means the next word will start a sentence
+    result = []
+    while True:
+        next_word_candidates =  transitions[current] # bigrams(current, _)
+        current = random.choice(next_word_candidates) # choose one at random
+        result.append(current) # append it to results
+        if current == ".": return " ".join(result) # If "." we are done
