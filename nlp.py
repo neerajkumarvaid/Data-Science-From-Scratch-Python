@@ -84,3 +84,10 @@ document = []
 for paragraph in content("p"):
     words = re.findall(regex, fix_unicode(paragraph.text))
     document.extend(words)
+
+from collections import defaultdict
+transitions =  defaultdict(list)
+
+for prev, current in zip(document, document[1:]):
+    transitions[prev].append(current)
+
