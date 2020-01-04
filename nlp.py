@@ -39,3 +39,18 @@ plt.figure(figsize = (8, 8), facecolor = None)
 plt.imshow(wordcloud) 
 plt.axis("off") 
 plt.tight_layout(pad = 0)
+
+def text_size(total: int) -> float:
+    """equals 8 if total is 0, 28 if total is 200"""
+    return 8 + total/ 200 * 20
+
+for word, job_popularity, resume_popularity in data:
+    plt.text(job_popularity, resume_popularity, word,
+            ha = 'center', va = 'center',
+            size = text_size(job_popularity + resume_popularity))
+plt.xlabel("Popularity on job postings")
+plt.ylabel("Popularity on resumes")
+plt.axis([0, 100, 0, 100])
+plt.xticks([])
+plt.yticks([])
+plt.show()
