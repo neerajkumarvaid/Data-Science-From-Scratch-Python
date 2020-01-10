@@ -321,3 +321,8 @@ for iter in tqdm.trange(1000):
             topic_word_counts[new_topic][word] += 1
             topic_counts[new_topic] += 1
             document_lengths[d] += 1
+
+for k, word_counts in enumerate(topic_word_counts):
+    for word, count in word_counts.most_common():
+        if count > 0: 
+            print(k, word, count)         
