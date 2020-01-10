@@ -249,3 +249,28 @@ documents = [
     ["databases", "HBase", "Postgres", "MySQL", "MongoDB"],
     ["libsvm", "regression", "support vector machines"]
 ]
+
+
+K = 4
+
+# How many times each topic is assigned to each document
+# a list of counters, one for each document
+document_topic_counts = [Counter() for _ in documents]
+
+# How many times each word is assigned to each topic
+# a list of counters, one for each topic
+topic_word_counts = [Counter() for _ in range(K)]
+
+# The total number of words assigned to each topic
+# a list of numbers one for each topic
+topic_counts = [0 for _ in range(K)]
+
+# The total number of words in each document
+# a list of numbers, ones for each document
+document_lengths = [len(documents) for document in documents]
+
+# The number of distinct words
+distinc_words = set(word for document in documents for word in document)
+
+# The number of documents
+D = len(documents)
