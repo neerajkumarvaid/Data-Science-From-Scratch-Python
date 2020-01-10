@@ -290,3 +290,12 @@ def topic_weight(d: int, word: str, k: int) -> float:
 def choose_new_topic(d: int, word: str) -> int:
     return sample_from([topic_weight(d, word, k) for k in range(K)])
 
+random.seed(0)
+document_topics = [[random.randrange(K) for word in document]
+                  for document in documents]
+
+for d in range(D):
+    for word, topic in zip(documents[d], document_topics[d]):
+        document_topic_counts[d][topic] += 1
+        topic_word_counts[topic][word] += 1
+        topic_counts[topic] += 1
