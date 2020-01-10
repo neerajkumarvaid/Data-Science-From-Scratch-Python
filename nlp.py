@@ -326,3 +326,8 @@ for k, word_counts in enumerate(topic_word_counts):
     for word, count in word_counts.most_common():
         if count > 0: 
             print(k, word, count)         
+
+topic_names = ["Big data and programming languages",
+              "Python and statistics",
+              "databases",
+              "machine learning"]                  
