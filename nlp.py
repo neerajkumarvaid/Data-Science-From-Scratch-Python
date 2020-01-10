@@ -331,3 +331,9 @@ topic_names = ["Big data and programming languages",
               "Python and statistics",
               "databases",
               "machine learning"]                  
+
+for document, topic_counts in zip(documents, document_topic_counts):
+    print(document)
+    for topic, count in topic_counts.most_common():
+        if count > 0:
+            print(topic_names[topic], count)
