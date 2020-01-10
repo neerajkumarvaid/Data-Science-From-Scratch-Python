@@ -211,3 +211,24 @@ def compare_distributions(num_samples: int = 1000) -> Dict[int, List[int]]:
         counts[gibbs_sample()][0] += 1
         counts[direct_sample()][1] += 1
     return counts         
+
+# Topic modeling
+import random
+from typing import List
+from collections import Counter
+
+def sample_from(weights: List[float]) -> int:
+    """Returns i with probability weights[i]/sum(weights)"""
+    total = sum(weights)
+    rnd = total * random.random() # uniform between 0 and total
+    for i, w in enumerate(weights):
+        rnd -= w   # return the smallest i such that
+        if rnd <= 0: return i # weight[0] +...+ weights[i] >= rnd
+        
+# Draw 1000 times and count
+draws = Counter(sample_from([0.1, 0.1, 0.8]) for _ in range(1000))
+
+print(f"draws[0] = {draws[0]}")
+print(f"draws[1] = {draws[1]}")
+print(f"draws[2] = {draws[2]}")
+
