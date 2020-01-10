@@ -274,3 +274,19 @@ distinc_words = set(word for document in documents for word in document)
 
 # The number of documents
 D = len(documents)
+
+def p_topic_given_document(topic: int, d: int, alpha: float = 0.1) -> float:
+    """The fraction of words in document 'd' that are assigned to 'topic'(+ some smoothing)"""
+    return (document_topic_counts[d][topic] + alpha)/(document_lengths[d] + K*alpha)
+
+def p_word_given_topic(word: str, topic: int, beta: float = 0.1) -> float:
+    """The fraction of words assigned to 'topic' that equals word (+ some smoothing)"""
+    return (topic_word_counts[topic][word] + beta)/(topic_counts[topic] + K*beta)
+
+def topic_weight(d: int, word: str, k: int) -> float:
+    """Given a document and a word in that document, return the weight for the kth topic"""
+    return p_word_given_topic(word, k)*p_topic_given_document(k,d)
+
+def choose_new_topic(d: int, word: str) -> int:
+    return sample_from([topic_weight(d, word, k) for k in range(K)])
+
