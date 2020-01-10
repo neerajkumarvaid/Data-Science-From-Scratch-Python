@@ -299,3 +299,25 @@ for d in range(D):
         document_topic_counts[d][topic] += 1
         topic_word_counts[topic][word] += 1
         topic_counts[topic] += 1
+
+import tqdm
+
+for iter in tqdm.trange(1000):
+    for d in range(D):
+        for i, (word, topic) in enumerate(zip(documents[d], document_topics[d])):
+            # remove this word/topic from the counts
+            # so that it doesn't influence the weigts
+            document_topic_counts[d][topic] -= 1
+            topic_word_counts[topic][word] -= 1
+            topic_counts[topic] -= 1
+            document_lengths[d] -= 1
+            
+            # choose new topic based on the weights
+            new_topic = choose_new_topic(d, word)
+            document_topics[d][i] = new_topic
+            
+            # and now add it back to the counts
+            document_topic_counts[d][new_topic] += 1
+            topic_word_counts[new_topic][word] += 1
+            topic_counts[new_topic] += 1
+            document_lengths[d] += 1
