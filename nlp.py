@@ -526,3 +526,41 @@ for sentence in tokenized_sentences:
     
                     # Add a target that's the one-hot-encoded nearby word
                     targets.append(vocab.one_hot_encode(nearby_word))
+
+# Model for learning word vectors
+    
+from scratch.deep_learning import Sequential, Linear
+    
+random.seed(0)
+EMBEDDING_DIM = 5  # seems like a good size
+    
+# Define the embedding layer separately, so we can reference it.
+embedding = TextEmbedding(vocab=vocab, embedding_dim=EMBEDDING_DIM)
+    
+model = Sequential([
+        # Given a word (as a vector of word_ids), look up its embedding.
+        embedding,
+        # And use a linear layer to compute scores for "nearby words".
+        Linear(input_dim=EMBEDDING_DIM, output_dim=vocab.size)
+    ])
+    
+    
+# Train the word vector model
+    
+from scratch.deep_learning import SoftmaxCrossEntropy, Momentum, GradientDescent
+    
+loss = SoftmaxCrossEntropy()
+optimizer = GradientDescent(learning_rate=0.01)
+    
+for epoch in range(100):
+    epoch_loss = 0.0
+    for input, target in zip(inputs, targets):
+        predicted = model.forward(input)
+        epoch_loss += loss.loss(predicted, target)
+        gradient = loss.gradient(predicted, target)
+        model.backward(gradient)
+        optimizer.step(model)
+    print(epoch, epoch_loss)            # Print the loss
+    #print(embedding.closest("black"))   # and also a few nearest words
+    #print(embedding.closest("slow"))    # so we can see what's being
+    #print(embedding.closest("car"))     # learned.                  
