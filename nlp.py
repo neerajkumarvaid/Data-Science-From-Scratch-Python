@@ -469,3 +469,29 @@ class Embedding(Layer):
     def grads(self) -> Iterable[Tensor]:
         return [self.grad]
         
+from typing import Tuple
+
+class TextEmbedding(Embedding):
+    def __init__(self, vocab: Vocabulary, embedding_dim: int) -> None:
+        # Call the superclass constructer
+        super().__init__(vocab.size, embedding_dim)
+        
+        # And hang on to vocab
+        self.vocab = vocab
+        
+    def __getitem__(self, word: str) -> Tensor:
+        word_id = self.vocab.get_id(word)
+        
+        if word_id is not None:
+            return self.embeddings[word_id]
+        else:
+            return None
+        
+    def closest(self, word: str, n: int = 5) -> List[Tuple[float, str]]:
+        """Return n closest words based on cosine similarity"""
+        vector = self(word)
+        # Compute pairs (similarity, other_word), and sort most similar first
+        scores = [(cosine_similarity(vector, self.embeddings[i]), other_word)
+                  for other_word, i in self.vocab.w2i.items()]
+        scores.sort(reverse=True)
+        return scores[:n]
