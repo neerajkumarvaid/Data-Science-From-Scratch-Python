@@ -431,3 +431,41 @@ def load_vocab(filename: str) -> Vocabulary:
         # Load w2i and generate i2w from it
         vocab.w2i = json.load(f)
         vocab.i2w = {id: word for word, id in vocab.w2i.items()}
+
+
+from typing import Iterable
+from deep_learning import Layer, Tensor, random_tensor, zero_like
+
+class Embedding(Layer):
+    def __init__(self, num_embeddings: int, embedding_dim: int) -> None:
+        self.num_embeddings = num_embeddings
+        self.embedding_dim = embedding_dim
+        
+        # One vector of size embedding_dim for each desired embedding
+        self.embeddings = random_tensor(num_embeddings, embedding_dim)
+        self.grad = zero_like(self.embeddings)
+        
+        # save last input_id
+        self.last_input_id = None
+        
+    def forward(self, input_id: int) -> Tensor:
+        """Just select the embedding vector corresponding to the input_id"""
+        self.input_id = input_id # remember for use in backpropagation
+        return self.embeddings[input_id]
+
+    def backward(self, gradient: Tensor) -> None:
+    # Zero out the gradient corresponding to the last input.
+    # This way cheaper than creating a new all-zero tensor each time.
+        if self.last_input_id is not None:
+            zero_row = [0 for _ in range(self.embedding_dim)]
+            self.grad[self.last_input_id] = zero_row
+        
+        self.last_input_id = self.input_id
+        self.grad[self.input_id] = gradient
+    
+    def params(self) -> Iterable[Tensor]:
+        return [self.embeddings]
+    
+    def grads(self) -> Iterable[Tensor]:
+        return [self.grad]
+        
