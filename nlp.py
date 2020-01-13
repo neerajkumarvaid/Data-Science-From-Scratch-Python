@@ -347,3 +347,27 @@ def cosine_similarity(v1: Vector, v2: Vector) -> float:
 print(f"cosine_similarity([1.,1.,1.], [2.,2.,2.]) = {cosine_similarity([1.,1.,1.], [2.,2.,2.])}")
 print(f"cosine_similarity([-1.,-1.], [2.,2.]) = {cosine_similarity([-1.,-1.], [2.,2.])}")
 print(f"cosine_similarity([1.,0.], [0.,1.]) = {cosine_similarity([1.,0.], [0.,1.])}")                  
+
+import random
+colors = ["red", "green", "blue", "yellow", "black", ""]
+nouns = ["bed", "car", "boat", "cat"]
+verbs = ["is", "was", "seems"]
+adverbs = ["very", "quite", "extremely", ""]
+adjectives = ["slow", "fast", "soft", "hard"]
+
+def make_sentence() -> str:
+    return " ".join(["The",
+                    random.choice(colors),
+                    random.choice(nouns),
+                    random.choice(verbs),
+                    random.choice(adverbs),
+                    random.choice(adjectives),
+                    "."])
+
+NUM_SENTENCES = 50
+random.seed(0)
+
+sentences = [make_sentence() for _ in range(NUM_SENTENCES)]
+
+for sentence in sentences:
+    print(sentence)
