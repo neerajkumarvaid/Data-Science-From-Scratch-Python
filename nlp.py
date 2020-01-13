@@ -654,3 +654,24 @@ class SimpleRnn(Layer):
 
     def grads(self) -> Iterable[Tensor]:
         return [self.w_grad, self.u_grad, self.b_grad]
+
+
+from bs4 import BeautifulSoup
+import requests
+url = "https://www.ycombinator.com/topcompanies/"
+soup = BeautifulSoup(requests.get(url).text, 'html5lib')
+
+# We get the companies twice, so use a set comprehension to deduplicate.
+companies = list({b.text
+                      for b in soup("b")
+                      if "h4" in b.get("class", ())})
+assert len(companies) == 102
+    
+vocab = Vocabulary([c for company in companies for c in company])
+    
+START = "^"
+STOP = "$"
+    
+# We need to add them to the vocabulary too.
+vocab.add(START)
+vocab.add(STOP)
