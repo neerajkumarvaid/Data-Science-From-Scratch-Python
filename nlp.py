@@ -675,3 +675,16 @@ STOP = "$"
 # We need to add them to the vocabulary too.
 vocab.add(START)
 vocab.add(STOP)
+
+vocab = Vocabulary([c for company in companies for c in company])
+HIDDEN_DIM = 32  # You should experiment with different sizes!
+    
+rnn1 =  SimpleRnn(input_dim=vocab.size, hidden_dim=HIDDEN_DIM)
+rnn2 =  SimpleRnn(input_dim=HIDDEN_DIM, hidden_dim=HIDDEN_DIM)
+linear = Linear(input_dim=HIDDEN_DIM, output_dim=vocab.size)
+    
+model = Sequential([
+        rnn1,
+        rnn2,
+        linear
+    ])
