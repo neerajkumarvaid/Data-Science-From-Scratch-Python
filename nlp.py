@@ -495,3 +495,34 @@ class TextEmbedding(Embedding):
                   for other_word, i in self.vocab.w2i.items()]
         scores.sort(reverse=True)
         return scores[:n]
+
+import re
+    
+    # This is not a great regex, but it works on our data.
+tokenized_sentences = [re.findall("[a-z]+|[.]", sentence.lower())
+                           for sentence in sentences]
+    
+# Create a vocabulary (that is, a mapping word -> word_id) based on our text.
+vocab = Vocabulary(word
+                       for sentence_words in tokenized_sentences
+                       for word in sentence_words)
+    
+from deep_learning import Tensor
+
+def one_hot_encode(i: int, num_labels: int = 10) -> List[float]:
+        return [1.0 if j == i else 0.0 for j in range(num_labels)]
+    
+inputs: List[int] = []
+targets: List[Tensor] = []
+    
+for sentence in tokenized_sentences:
+        for i, word in enumerate(sentence):          # For each word
+            for j in [i - 2, i - 1, i + 1, i + 2]:   # take the nearby locations
+                if 0 <= j < len(sentence):           # that aren't out of bounds
+                    nearby_word = sentence[j]        # and get those words.
+    
+                    # Add an input that's the original word_id
+                    inputs.append(vocab.get_id(word))
+    
+                    # Add a target that's the one-hot-encoded nearby word
+                    targets.append(vocab.one_hot_encode(nearby_word))
