@@ -564,3 +564,12 @@ for epoch in range(100):
     #print(embedding.closest("black"))   # and also a few nearest words
     #print(embedding.closest("slow"))    # so we can see what's being
     #print(embedding.closest("car"))     # learned.                  
+
+# Explore most similar words
+    
+pairs = [(cosine_similarity(embedding[w1], embedding[w2]), w1, w2)
+             for w1 in vocab.w2i
+             for w2 in vocab.w2i
+             if w1 < w2]
+pairs.sort(reverse=True)
+print(pairs[:5])
