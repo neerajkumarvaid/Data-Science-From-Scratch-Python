@@ -595,3 +595,62 @@ for word, idx in vocab.w2i.items():
 # And hide the axes
 ax.get_xaxis().set_visible(False)
 ax.get_yaxis().set_visible(False)
+
+
+from deep_learning import tensor_apply, tanh
+
+class SimpleRnn(Layer):
+    """Just about the simplest possible recurrent layer."""
+    def __init__(self, input_dim: int, hidden_dim: int) -> None:
+        self.input_dim = input_dim
+        self.hidden_dim = hidden_dim
+        
+        self.w = random_tensor(hidden_dim, input_dim, init = 'xavier')
+        self.u = random_tensor(hidden_dim, hidden_dim, init = 'xavier')
+        self.b = random_tensor(hidden_dim)
+        
+        self.reset_hidden_state()
+        
+    def reset_hidden_state(self) -> None:
+        self.hidden = [0 for _ in range(self.hidden_dim)]
+        
+    def forward(self, input: Tensor) -> Tensor:
+        self.input = input  # Save both input and previous 
+        self.prev_hidden = self.hidden # hidden state to use in backprop
+        
+        a = [dot(self.w[h], input) + dot(self.u[h], self.hidden) + self.b[h]
+            for h in range(self.hidden_dim)]
+        
+        self.hidden = tensor_apply(tanh, a) # Apply tanh activation
+        return self.hidden # and return the result
+    
+    def backward(self, gradient: Tensor):
+        # Backpropagate through the tanh
+        a_grad = [gradient[h] * (1 - self.hidden[h] ** 2)
+                  for h in range(self.hidden_dim)]
+
+        # b has the same gradient as a
+        self.b_grad = a_grad
+
+        # Each w[h][i] is multiplied by input[i] and added to a[h],
+        # so each w_grad[h][i] = a_grad[h] * input[i]
+        self.w_grad = [[a_grad[h] * self.input[i]
+                        for i in range(self.input_dim)]
+                       for h in range(self.hidden_dim)]
+
+        # Each u[h][h2] is multiplied by hidden[h2] and added to a[h],
+        # so each u_grad[h][h2] = a_grad[h] * prev_hidden[h2]
+        self.u_grad = [[a_grad[h] * self.prev_hidden[h2]
+                        for h2 in range(self.hidden_dim)]
+                       for h in range(self.hidden_dim)]
+
+        # Each input[i] is multiplied by every w[h][i] and added to a[h],
+        # so each input_grad[i] = sum(a_grad[h] * w[h][i] for h in ...)
+        return [sum(a_grad[h] * self.w[h][i] for h in range(self.hidden_dim))
+                for i in range(self.input_dim)]
+
+    def params(self) -> Iterable[Tensor]:
+        return [self.w, self.u, self.b]
+
+    def grads(self) -> Iterable[Tensor]:
+        return [self.w_grad, self.u_grad, self.b_grad]
