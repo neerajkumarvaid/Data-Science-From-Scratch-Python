@@ -717,3 +717,32 @@ def generate(seed: str = START, max_len: int = 50) -> str:
     
 loss = SoftmaxCrossEntropy()
 optimizer = Momentum(learning_rate=0.01, momentum=0.9)
+
+
+import tqdm
+for epoch in range(300):
+    random.shuffle(companies)  # Train in a different order each epoch.
+    epoch_loss = 0             # Track the loss.
+    for company in tqdm.tqdm(companies):
+        rnn1.reset_hidden_state()  # Reset both hidden states.
+        rnn2.reset_hidden_state()
+        company = START + company + STOP   # Add START and STOP characters.
+    
+        # The rest is just our usual training loop, except that the inputs
+        # and target are the one-hot-encoded previous and next characters.
+        for prev, next in zip(company, company[1:]):
+            input = vocab.one_hot_encode(prev)
+            target = vocab.one_hot_encode(next)
+            predicted = model.forward(input)
+            epoch_loss += loss.loss(predicted, target)
+            gradient = loss.gradient(predicted, target)
+            model.backward(gradient)
+            optimizer.step(model)
+    
+    # Each epoch print the loss and also generate a name
+    print(epoch, epoch_loss, generate())
+    
+    # Turn down the learning rate for the last 100 epochs.
+    # There's no principled reason for this, but it seems to work.
+    if epoch == 200:
+        optimizer.lr *= 0.1
