@@ -688,3 +688,32 @@ model = Sequential([
         rnn2,
         linear
     ])
+
+
+from deep_learning import softmax
+    
+def generate(seed: str = START, max_len: int = 50) -> str:
+    rnn1.reset_hidden_state()  # Reset both hidden states.
+    rnn2.reset_hidden_state()
+    output = [seed]            # Start the output with the specified seed.
+    
+    # Keep going until we produce the STOP character or reach the max length
+    while output[-1] != STOP and len(output) < max_len:
+        # Use the last character as the input
+        input = vocab.one_hot_encode(output[-1])
+    
+        # Generate scores using the model
+        predicted = model.forward(input)
+    
+        # Convert them to probabilities and draw a random char_id
+        probabilities = softmax(predicted)
+        next_char_id = sample_from(probabilities)
+    
+        # Add the corresponding char to our output
+        output.append(vocab.get_word(next_char_id))
+    
+    # Get rid of START and END characters and return the word.
+    return ''.join(output[1:-1])
+    
+loss = SoftmaxCrossEntropy()
+optimizer = Momentum(learning_rate=0.01, momentum=0.9)
