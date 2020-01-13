@@ -406,3 +406,15 @@ class Vocabulary:
         assert word_id is not None, f"unkown word {word}"
             
         return [1.0 if i == word_id else 0.0 for i in  range(self.size)]
+
+vocab = Vocabulary(["a","b","c"])
+print(f"vocab.size = {vocab.size}")
+character = "b"
+print(f"vocab.get_id(b) = {vocab.get_id(character)}")
+print(f"vocab.one_hot_encode(b) = {vocab.one_hot_encode(character)}")
+character = "z"
+print(f"vocab.get_id(z) = {vocab.get_id(character)}")
+vocab.add("z")
+print(f"vocab.size = {vocab.size}")
+print(f"vocab.get_id(z) = {vocab.get_id(character)}")
+print(f"vocab.one_hot_encode(z) = {vocab.one_hot_encode(character)}")
