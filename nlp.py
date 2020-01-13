@@ -371,3 +371,38 @@ sentences = [make_sentence() for _ in range(NUM_SENTENCES)]
 
 for sentence in sentences:
     print(sentence)
+
+#from deep_learning import Tensor
+Tensor = list
+from typing import List
+class Vocabulary:
+    def __init__(self, words: List[str] = None) -> None:
+        self.w2i: Dict[str, int] = {} # mapping word to word_id
+        self.i2w: Dict[int, str] = {} # mapping word_id to word
+        
+        for word in (words or []): # if words were provided
+            self.add(word) # add them
+            
+    @property
+    def size(self) -> int:
+        """how many words are in the vocabulary"""
+        return len(self.w2i)
+        
+    def add(self, word: str) -> None:
+        if word not in self.w2i: # If the word is new to us:
+            word_id = len(self.w2i) # Find the next id
+            self.w2i[word] = word_id  # Add to the word -> word_id map
+            self.i2w[word_id] = word # Add to the word_id -> map word 
+                
+    def get_id(self, word: str) -> int:
+        """return the id of the word (or None)"""
+        return self.w2i.get(word)
+        
+    def get_word(self, word_id: int) -> str:
+        return self.i2w.get(word_id)
+        
+    def one_hot_encode(self, word: str) -> Tensor:
+        word_id = self.get_id(word)
+        assert word_id is not None, f"unkown word {word}"
+            
+        return [1.0 if i == word_id else 0.0 for i in  range(self.size)]
