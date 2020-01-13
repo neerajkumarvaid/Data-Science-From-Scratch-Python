@@ -573,3 +573,25 @@ pairs = [(cosine_similarity(embedding[w1], embedding[w2]), w1, w2)
              if w1 < w2]
 pairs.sort(reverse=True)
 print(pairs[:5])
+
+
+# Plot word vectors
+    
+from working_with_data import pca, transform
+import matplotlib.pyplot as plt
+    
+# Extract the first two principal components and transform the word vectors
+components = pca(embedding.embeddings, 2)
+transformed = transform(embedding.embeddings, components)
+    
+# Scatter the points (and make them white so they're "invisible")
+fig, ax = plt.subplots()
+ax.scatter(*zip(*transformed), marker='.', color='w')
+    
+# Add annotations for each word at its transformed location
+for word, idx in vocab.w2i.items():
+    ax.annotate(word, transformed[idx])
+    
+# And hide the axes
+ax.get_xaxis().set_visible(False)
+ax.get_yaxis().set_visible(False)
