@@ -418,3 +418,16 @@ vocab.add("z")
 print(f"vocab.size = {vocab.size}")
 print(f"vocab.get_id(z) = {vocab.get_id(character)}")
 print(f"vocab.one_hot_encode(z) = {vocab.one_hot_encode(character)}")
+
+import json
+
+def save_vocab(vocab: Vocabulary, filename: str) -> None:
+    with open(filename, 'w') as f:
+        json.dump(vocab.w2i, f)  # Only need to save w2i
+        
+def load_vocab(filename: str) -> Vocabulary:
+    vocab = Vocabulary()
+    with open(filename) as f:
+        # Load w2i and generate i2w from it
+        vocab.w2i = json.load(f)
+        vocab.i2w = {id: word for word, id in vocab.w2i.items()}
