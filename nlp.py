@@ -337,3 +337,13 @@ for document, topic_counts in zip(documents, document_topic_counts):
     for topic, count in topic_counts.most_common():
         if count > 0:
             print(topic_names[topic], count)
+
+from vector_operations import dot, Vector
+import math
+
+def cosine_similarity(v1: Vector, v2: Vector) -> float:
+    return dot(v1, v2)/math.sqrt(dot(v1,v1) * dot(v2,v2))
+
+print(f"cosine_similarity([1.,1.,1.], [2.,2.,2.]) = {cosine_similarity([1.,1.,1.], [2.,2.,2.])}")
+print(f"cosine_similarity([-1.,-1.], [2.,2.]) = {cosine_similarity([-1.,-1.], [2.,2.])}")
+print(f"cosine_similarity([1.,0.], [0.,1.]) = {cosine_similarity([1.,0.], [0.,1.])}")                  
