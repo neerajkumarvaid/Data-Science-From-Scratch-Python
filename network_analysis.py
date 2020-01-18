@@ -164,3 +164,32 @@ eigenvector_centrality, _ = find_eigenvector(adjacency_matrix)
 from collections import Counter
 
 endorsement_counts = Counter(target for source, target in endorsements)
+
+import tqdm
+
+def page_rank(users: List[User],
+             endorsements: List[Tuple[int, int]],
+             damping: float = 0.85,
+             num_iters: int = 100) -> Dict[int, float]:
+    # Compute how many people each person endorses
+    outgoing_counts = Counter(target for source, target in endorsements)
+    
+    # Initially distribute page-rank evenly
+    num_users = len(users)
+    pr = {user.id: 1/num_users for user in users}
+    
+    # small fraction of PageRank that each node gets each iteration
+    base_pr = (1 - damping)/num_users
+    
+    for iter in tqdm.trange(num_iters):
+        next_pr = {user.id: base_pr for user in users} # start with base_pr
+        
+        for source, target in endorsements:
+            # Add damped fraction of source pr to target
+            next_pr[target] += damping*pr[source]/outgoing_counts[source]
+            
+        pr = next_pr
+        
+    return pr
+
+pr = page_rank(users, endorsements)
