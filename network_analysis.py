@@ -127,3 +127,24 @@ def matrix_times_vector(m: Matrix, v: Vector) -> Vector:
     assert nc == n, "must have (# of columns in m) == (# of elements in v)"
     
     return [dot(row, v) for row in m] # output has length nr
+
+
+# Finding the eigen vectors of matrices
+
+from typing import Tuple
+import random
+from vector_operations import magnitude, distance
+
+def find_eigenvector(m: Matrix, tolerance: float = 0.00001) -> Tuple[Vector, float]:
+    guess = [random.random() for _ in m]
+    
+    while True:
+        result = matrix_times_vector(m, guess) # transform the guess
+        norm = magnitude(result) # compute the norm
+        next_guess = [x/norm for x in result] # rescale
+        
+        if distance(guess, next_guess) < tolerance:
+            # convergence so return (eigenvector, eigenvalue)
+            return next_guess, norm
+        
+        guess = next_guess
