@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 """
-Created on Wed Jan  1 07:27:33 2020
+Created on Wed Jan  8 07:27:33 2020
 @author: Neeraj
-Description: This file contains an impelementation of k-means and bottom-up hierarchical clustering from scratch in Python.
-Reference: Chapter 20 Clustering
+Description: Implementation of popular natural language processing algorithms including bigrams, trigrams, topic modeling, 
+word vectors and recurrent neural networks from scratch in Python 
+Reference: Chapter 21 Natural Language Processing
 """
 
 from vector_operations import Vector
