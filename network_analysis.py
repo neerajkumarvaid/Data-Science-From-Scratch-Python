@@ -98,3 +98,9 @@ for source in users:
                         betweenness_centrality[between_id] += contrib
                         
 #betweenness_centrality
+def farness(user_id: int) -> float:
+    """the sum of the lengths of the shortest paths to each other user"""
+    return sum(len([paths[0]]) for paths in shortest_paths[user_id].values())
+
+closeness_centrality = {user.id: 1/farness(user.id) for user in users}
+#closeness_centrality
