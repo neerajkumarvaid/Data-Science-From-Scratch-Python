@@ -148,3 +148,11 @@ def find_eigenvector(m: Matrix, tolerance: float = 0.00001) -> Tuple[Vector, flo
             return next_guess, norm
         
         guess = next_guess
+
+        
+    return 1 if (i,j) in friend_pairs or (j,i) in friend_pairs else 0
+
+n = len(users)
+adjacency_matrix = make_matrix(n,n, entry_fn)
+
+#adjacency_matrix        
