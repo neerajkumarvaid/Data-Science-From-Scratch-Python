@@ -156,3 +156,4 @@ n = len(users)
 adjacency_matrix = make_matrix(n,n, entry_fn)
 
 #adjacency_matrix        
+eigenvector_centrality, _ = find_eigenvector(adjacency_matrix)
