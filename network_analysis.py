@@ -157,3 +157,10 @@ adjacency_matrix = make_matrix(n,n, entry_fn)
 
 #adjacency_matrix        
 eigenvector_centrality, _ = find_eigenvector(adjacency_matrix)
+
+                (2, 1), (1, 3), (2, 3), (3, 4), (5, 4),
+                (5, 6), (7, 5), (6, 8), (8, 7), (8, 9)]
+
+from collections import Counter
+
+endorsement_counts = Counter(target for source, target in endorsements)
