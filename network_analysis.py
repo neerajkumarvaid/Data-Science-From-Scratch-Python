@@ -118,3 +118,12 @@ def matrix_times_matrix(m1: Matrix, m2: Matrix) -> Matrix:
         return sum(m1[i][k]*m2[k][j] for k in range(nc1))
     
     return make_matrix(nr1,nc2, entry_fn)
+
+from vector_operations import Vector, dot
+
+def matrix_times_vector(m: Matrix, v: Vector) -> Vector:
+    nr, nc = shape(m)
+    n = len(v)
+    assert nc == n, "must have (# of columns in m) == (# of elements in v)"
+    
+    return [dot(row, v) for row in m] # output has length nr
