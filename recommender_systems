@@ -240,3 +240,22 @@ for epoch in range(20):
     loop(train, learning_rate=learning_rate)
     loop(validation)
 loop(test)        
+
+
+from working_with_data import pca, transform
+    
+original_vectors = [vector for vector in movie_vectors.values()]
+components = pca(original_vectors, 2)
+    
+ratings_by_movie = defaultdict(list)
+for rating in ratings:
+    ratings_by_movie[rating.movie_id].append(rating.rating)
+    
+vectors = [
+        (movie_id,
+         sum(ratings_by_movie[movie_id]) / len(ratings_by_movie[movie_id]),
+         movies[movie_id],
+         vector)
+        for movie_id, vector in zip(movie_vectors.keys(),
+                                    transform(original_vectors, components))
+    ]
