@@ -188,3 +188,19 @@ test = ratings[split2:]               # 15% of the data
 avg_rating = sum(rating.rating for rating in train) / len(train)
 baseline_error = sum((rating.rating - avg_rating) ** 2
                          for rating in test) / len(test)
+
+# Embedding vectors for matrix factorization model
+    
+from deep_learning import random_tensor
+    
+EMBEDDING_DIM = 2
+    
+# Find unique ids
+user_ids = {rating.user_id for rating in ratings}
+movie_ids = {rating.movie_id for rating in ratings}
+    
+# Then create a random vector per id
+user_vectors = {user_id: random_tensor(EMBEDDING_DIM)
+                    for user_id in user_ids}
+movie_vectors = {movie_id: random_tensor(EMBEDDING_DIM)
+                     for movie_id in movie_ids}
