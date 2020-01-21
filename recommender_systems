@@ -233,3 +233,10 @@ def loop(dataset: List[Rating],
                     movie_vector[j] -= learning_rate * movie_gradient[j]
     
             t.set_description(f"avg loss: {loss / (i + 1)}")
+
+for epoch in range(20):
+    learning_rate *= 0.9
+    print(epoch, learning_rate)
+    loop(train, learning_rate=learning_rate)
+    loop(validation)
+loop(test)        
