@@ -33,3 +33,15 @@ users_interests = [
 from collections import Counter
 
 popular_interests = Counter(interest for user_interests in users_interests for interest in user_interests)
+
+
+from typing import List, Tuple
+
+def most_popular_new_interest(user_interests: List[str],
+                             max_results: int  = 5) -> List[Tuple[str, int]]:
+    suggestions = [(interest, frequency) for interest, frequency in popular_interests.most_common()
+                  if interest not in user_interests]
+    
+    return suggestions[:max_results]
+
+most_popular_new_interest(users_interests[3])
