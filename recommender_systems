@@ -175,3 +175,16 @@ for rating in ratings:
 avg_ratings = [(sum(title_ratings) / len(title_ratings), movie_id)
                    for movie_id, title_ratings in star_wars_ratings.items()]
         
+random.seed(0)
+random.shuffle(ratings)
+    
+split1 = int(len(ratings) * 0.7)
+split2 = int(len(ratings) * 0.85)
+    
+train = ratings[:split1]              # 70% of the data
+validation = ratings[split1:split2]   # 15% of the data
+test = ratings[split2:]               # 15% of the data
+    
+avg_rating = sum(rating.rating for rating in train) / len(train)
+baseline_error = sum((rating.rating - avg_rating) ** 2
+                         for rating in test) / len(test)
