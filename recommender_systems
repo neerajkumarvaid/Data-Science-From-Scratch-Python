@@ -158,3 +158,20 @@ with open(RATINGS, encoding="iso-8859-1") as f:
     reader = csv.reader(f, delimiter="\t")
     ratings = [Rating(user_id, movie_id, float(rating))
                    for user_id, movie_id, rating, _ in reader]    
+
+import re
+
+# Data structure for accumulating ratings by movie_id
+star_wars_ratings = {movie_id: []
+                         for movie_id, title in movies.items()
+                         if re.search("Star Wars|Empire Strikes|Jedi", title)}
+
+# Iterate over ratings, accumulating the Star Wars ones
+for rating in ratings:
+    if rating.movie_id in star_wars_ratings:
+        star_wars_ratings[rating.movie_id].append(rating.rating)
+    
+# Compute the average rating for each movie
+avg_ratings = [(sum(title_ratings) / len(title_ratings), movie_id)
+                   for movie_id, title_ratings in star_wars_ratings.items()]
+        
