@@ -99,3 +99,5 @@ def user_based_suggestions(user_id: int,
         return [(suggestions, weight) for suggestion, weight in suggestions
                if suggestion not in users_interests[user_id]]
     
+interest_user_matrix = [[user_interest_vector[j] for user_interest_vector in user_interest_vectors]
+                       for j, _ in enumerate(unique_interests)]
