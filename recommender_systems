@@ -204,3 +204,32 @@ user_vectors = {user_id: random_tensor(EMBEDDING_DIM)
                     for user_id in user_ids}
 movie_vectors = {movie_id: random_tensor(EMBEDDING_DIM)
                      for movie_id in movie_ids}
+
+rom typing import List
+import tqdm
+from vector_operations import dot
+    
+def loop(dataset: List[Rating],
+            learning_rate: float = None) -> None:
+    with tqdm.tqdm(dataset) as t:
+        loss = 0.0
+        for i, rating in enumerate(t):
+            movie_vector = movie_vectors[rating.movie_id]
+            user_vector = user_vectors[rating.user_id]
+            predicted = dot(user_vector, movie_vector)
+            error = predicted - rating.rating
+            loss += error ** 2
+    
+            if learning_rate is not None:
+                    #     predicted = m_0 * u_0 + ... + m_k * u_k
+                    # So each u_j enters output with coefficent m_j
+                    # and each m_j enters output with coefficient u_j
+                user_gradient = [error * m_j for m_j in movie_vector]
+                movie_gradient = [error * u_j for u_j in user_vector]
+    
+                    # Take gradient steps
+                for j in range(EMBEDDING_DIM):
+                    user_vector[j] -= learning_rate * user_gradient[j]
+                    movie_vector[j] -= learning_rate * movie_gradient[j]
+    
+            t.set_description(f"avg loss: {loss / (i + 1)}")
