@@ -75,3 +75,27 @@ def most_similar_users_to(user_id: int) -> List[Tuple[int, float]]:
             if user_id != other_user_id and similarity >0]
     
     return sorted(pairs, key = lambda pair: pair[-1], reverse = True)
+
+
+
+def user_based_suggestions(user_id: int,
+                          include_current_interests: bool = False):
+    # Sum up the similarities
+    suggestions: Dict[str, float] = defaultdict(float)
+    
+    for other_user_id, similarity in most_similar_users_to(user_id):
+        for interest in users_interests[other_user_id]:
+            suggestions[interest] += similarity
+            
+    # convert them to sorted list
+    
+    suggestions = sorted(suggestions.items(), key = lambda pair: pair[-1], reverse = True)
+    
+    # And optionally remove already interests
+    
+    if include_current_interests:
+        return suggestions
+    else:
+        return [(suggestions, weight) for suggestion, weight in suggestions
+               if suggestion not in users_interests[user_id]]
+    
