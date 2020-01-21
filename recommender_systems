@@ -137,3 +137,24 @@ def most_similar_interests_to(interest_id: int):
     else:
         return [(suggestion, weight) for suggestion, weight in suggestions
                if suggestion not in users_interests[user_id]]
+    
+MOVIES = "./ml-100k/u.item"
+RATINGS = "./ml-100k/u.data"
+
+from typing import NamedTuple
+
+class Rating(NamedTuple):
+    user_id: str
+    movie_id: str
+    rating: float
+        
+import csv
+with open(MOVIES, encoding="iso-8859-1") as f:
+        reader = csv.reader(f, delimiter="|")
+        movies = {movie_id: title for movie_id, title, *_ in reader}
+        
+# Create a list of [Rating]
+with open(RATINGS, encoding="iso-8859-1") as f:
+    reader = csv.reader(f, delimiter="\t")
+    ratings = [Rating(user_id, movie_id, float(rating))
+                   for user_id, movie_id, rating, _ in reader]    
