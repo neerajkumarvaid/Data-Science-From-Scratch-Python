@@ -114,3 +114,26 @@ def most_similar_interests_to(interest_id: int):
             if interest_id != other_interest_id and similarity > 0]
     
     return sorted(pairs, key = lambda pair: pair[-1], reverse = True)
+
+
+                          include_current_interests: bool = False):
+    
+    # Add up the similar interests
+    suggestions = defaultdict(float)
+    
+    user_interest_vector = user_interest_vectors[user_id]
+    
+    for interest_id, is_interested in enumerate(user_interest_vector):
+        if is_interested == 1:
+            similar_interests = most_similar_interests_to(interest_id)
+            for interest, similarity in similar_interests:
+                suggestions[interest] += similarity
+                
+    # sort them by weight
+    suggestions = sorted(suggestions.items(), key = lambda pair: pair[-1], reverse = True)
+    
+    if include_current_interests:
+        return suggestions
+    else:
+        return [(suggestion, weight) for suggestion, weight in suggestions
+               if suggestion not in users_interests[user_id]]
