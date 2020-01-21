@@ -1,0 +1,13 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Tue Jan 21 14:48:22 2020
+
+@author: Neeraj
+
+Description: Implementation of user and item based collaborative filtering, and a matrix factorization algorithm in Python.
+
+Reference: Chapter 23 : Recommender Systems
+
+
+"""
