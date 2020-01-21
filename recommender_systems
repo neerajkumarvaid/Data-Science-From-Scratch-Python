@@ -46,3 +46,22 @@ def most_popular_new_interest(user_interests: List[str],
 
 unique_interests = sorted({interest for user_interests in users_interests
                           for interest in user_interests})
+
+
+def make_user_interest_vector(user_interests: List[str]) -> List[int]:
+    """Given a list of interests, produce a vector whose ith element is 1 if unique_interest[i]
+    is in the list, else 0"""
+    
+    # create a list of zeros for all unique interests    
+    return [1 if interest in user_interests else 0 for interest in unique_interests ]
+
+user_interest_vectors = [make_user_interest_vector(user_interests) for user_interests in users_interests]
+
+from vector_operations import Vector, dot
+import math
+def cosine_similarity(v1: Vector, v2: Vector) -> float:
+    return dot(v1, v2)/math.sqrt(dot(v1,v1) * dot(v2,v2))
+
+user_similarities = [[cosine_similarity(interest_vector_i, interest_vector_j)
+                    for interest_vector_j in user_interest_vectors]
+                    for interest_vector_i in user_interest_vectors]
