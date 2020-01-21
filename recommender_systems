@@ -44,4 +44,5 @@ def most_popular_new_interest(user_interests: List[str],
     
     return suggestions[:max_results]
 
-most_popular_new_interest(users_interests[3])
+unique_interests = sorted({interest for user_interests in users_interests
+                          for interest in user_interests})
