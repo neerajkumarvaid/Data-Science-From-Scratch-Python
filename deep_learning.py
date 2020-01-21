@@ -1,7 +1,7 @@
 """
 Created on Tue Nov  12 11:37:37 2019
 @author: Neeraj
-Description: Implementation deep neural networks with various loss fucntions and optimization techniques including 
+Description: Implementation of deep neural networks with various loss fucntions and optimization techniques including 
 network regulation using dropout from scratch in Python. 
 Reference: Chapter 19 : Deep Learning
 """
