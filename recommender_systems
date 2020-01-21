@@ -65,3 +65,13 @@ def cosine_similarity(v1: Vector, v2: Vector) -> float:
 user_similarities = [[cosine_similarity(interest_vector_i, interest_vector_j)
                     for interest_vector_j in user_interest_vectors]
                     for interest_vector_i in user_interest_vectors]
+
+
+# find most similar users
+
+def most_similar_users_to(user_id: int) -> List[Tuple[int, float]]:
+    pairs = [(other_user_id, similarity)
+            for other_user_id, similarity in enumerate(user_similarities[user_id])
+            if user_id != other_user_id and similarity >0]
+    
+    return sorted(pairs, key = lambda pair: pair[-1], reverse = True)
