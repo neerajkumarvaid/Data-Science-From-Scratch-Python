@@ -278,3 +278,13 @@ sql_users = (users
             .join(user_interests)
             .where(lambda row: row["interest"] == "SQL")
             .select(keep_columns = ["name"]))
+
+
+def count_interests(rows: List[Row]) -> int:
+    """Counts how many rows have non-None interests"""
+    return len([row for row in rows if row["interest"] is not None])
+
+user_interest_counts = (users
+                       .join(user_interests, left_join = True)
+                       .group_by(group_by_columns = ["user_id"],
+                                aggregates = {"num_interests": count_interests}))
