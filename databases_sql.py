@@ -288,3 +288,11 @@ user_interest_counts = (users
                        .join(user_interests, left_join = True)
                        .group_by(group_by_columns = ["user_id"],
                                 aggregates = {"num_interests": count_interests}))
+
+
+likes_sql_user_ids = (user_interests
+                     .where(lambda row: row["interest"] == "SQL")
+                     .select(keep_columns = ['user_id']))
+
+likes_sql_user_ids.group_by(group_by_columns = [],
+                           aggregates = {'min_user_id': min_user_id})
