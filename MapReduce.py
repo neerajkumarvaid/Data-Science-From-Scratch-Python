@@ -77,3 +77,22 @@ sum_reducer = values_reducer(sum)
 max_reducer = values_reducer(max)
 min_reducer = values_reducer(min)
 count_distinct_reducer = values_reducer(lambda values: len(set(values)))
+
+
+status_updates = [
+        {"id": 2,
+         "username" : "neerajkumar",
+         "text" : "Should I use the second edition of Joel's data science book?",
+         "created_at" : datetime.datetime(2018, 2, 21, 11, 47, 0),
+         "liked_by" : ["data_guy", "data_gal", "mike"] },
+         # ...
+    ]
+
+def data_science_day_mapper(status_update: dict) -> Iterable:
+    """Yields (day_of_week, 1) of status_update contains 'data science'"""
+    if "data science" in status_update["text"].lower():
+        day_of_week = status_update["created_at"].weekday()
+        yield (day_of_week, 1)
+        
+data_science_days = map_reduce(status_updates, data_science_day_mapper,
+                              sum_reducer)
