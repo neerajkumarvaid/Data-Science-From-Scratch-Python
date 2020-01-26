@@ -96,3 +96,25 @@ def data_science_day_mapper(status_update: dict) -> Iterable:
         
 data_science_days = map_reduce(status_updates, data_science_day_mapper,
                               sum_reducer)
+
+from collections import Counter
+def words_per_user_mapper(status_update: dict):
+    user = status_update["username"]
+    for word in tokenize(status_update["text"]):
+        yield (user, (word, 1))
+        
+def most_popular_word_reducer(user: str,
+                             words_and_counts: Iterable[KV]):
+    
+    """Given a sequence of (word, count) pairs,
+    return the word with the highest total count"""
+    word_counts = Counter()
+    for word, count in words_and_counts:
+        word_counts[word] += count
+        word, count = word_counts.most_common(1)[0]
+        
+        yield (user, (word, count))
+        
+user_words = map_reduce(status_updates, 
+                        words_per_user_mapper,
+                       most_popular_word_reducer)
