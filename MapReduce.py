@@ -118,3 +118,13 @@ def most_popular_word_reducer(user: str,
 user_words = map_reduce(status_updates, 
                         words_per_user_mapper,
                        most_popular_word_reducer)
+
+
+def liker_mapper(status_update: dict):
+    user = status_update["username"]
+    for liker in status_update["liked_by"]:
+        yield (user, liker)
+        
+distinct_likers_per_user = map_reduce(status_updates, 
+                                      liker_mapper,
+                                     count_distinct_reducer)
