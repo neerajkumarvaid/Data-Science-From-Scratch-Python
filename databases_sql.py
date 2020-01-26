@@ -223,3 +223,16 @@ def name_length(row) -> int:
 
 name_lengths = users.select(keep_columns = [],
                            additional_columns = {"name_length": name_length})
+
+
+def min_user_id(rows) -> int:
+    return min(row["user_id"] for row in rows)
+    
+def length(rows) -> int:
+    return len(rows)
+    
+stats_by_length = (users
+                  .select(additional_columns = {"name_length": name_length})
+                  .group_by(group_by_columns = ["name_length"],
+                           aggregates = {"min_user_id": min_user_id,
+                                        "num_users": length}))
