@@ -72,3 +72,8 @@ def values_reducer(values_fn: Callable) -> Reducer:
     def reduce(key, values: Iterable) -> KV:
         return (key, values_fn(values))         
     return reduce
+
+sum_reducer = values_reducer(sum)
+max_reducer = values_reducer(max)
+min_reducer = values_reducer(min)
+count_distinct_reducer = values_reducer(lambda values: len(set(values)))
