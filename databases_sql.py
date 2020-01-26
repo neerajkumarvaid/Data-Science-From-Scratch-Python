@@ -250,3 +250,14 @@ avg_friends_by_letter = (users
                         .group_by(group_by_columns = ['first_letter'],
                                  aggregates = {"avg_num_friends": average_num_friends},
                                  having = enough_friends))
+
+
+def sum_user_ids(rows: List[Row]) -> int:
+        return sum(row["user_id"] for row in rows)
+    
+user_id_sum = (
+        users
+        .where(lambda row: row["user_id"] > 1)
+        .group_by(group_by_columns=[],
+                  aggregates={ "user_id_sum" : sum_user_ids })
+    )
