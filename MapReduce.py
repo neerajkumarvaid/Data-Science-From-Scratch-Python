@@ -128,3 +128,54 @@ def liker_mapper(status_update: dict):
 distinct_likers_per_user = map_reduce(status_updates, 
                                       liker_mapper,
                                      count_distinct_reducer)
+
+
+from typing import NamedTuple
+
+class Entry(NamedTuple):
+    name: str
+    i: int
+    j: int
+    value: float
+
+def matrix_multiply_mapper(num_rows_a: int, num_cols_b: int) -> Mapper:
+    # C[x][y] = A[x][0] * B[0][y] + ... + A[x][m] * B[m][y]
+    #
+    # so an element A[i][j] goes into every C[i][y] with coef B[j][y]
+    # and an element B[i][j] goes into every C[x][j] with coef A[x][i]
+    def mapper(entry: Entry):
+        if entry.name == "A":
+            for y in range(num_cols_b):
+                key = (entry.i, y)              # which element of C
+                value = (entry.j, entry.value)  # which entry in the sum
+                yield (key, value)
+        else:
+            for x in range(num_rows_a):
+                key = (x, entry.j)              # which element of C
+                value = (entry.i, entry.value)  # which entry in the sum
+                yield (key, value)
+
+    return mapper
+
+def matrix_multiply_reducer(key: Tuple[int, int],
+                            indexed_values: Iterable[Tuple[int, int]]):
+    results_by_index = defaultdict(list)
+
+    for index, value in indexed_values:
+        results_by_index[index].append(value)
+
+    # Multiply the values for positions with two values
+    # (one from A, and one from B) and sum them up.
+    sumproduct = sum(values[0] * values[1]
+                     for values in results_by_index.values()
+                     if len(values) == 2)
+
+    if sumproduct != 0.0:
+        yield (key, sumproduct)
+
+A = [[3, 2, 0],
+     [0, 0, 0]]
+
+B = [[4, -1, 0],
+     [10, 0, 0],
+     [0, 0, 0]]
