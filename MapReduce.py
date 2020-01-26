@@ -37,3 +37,38 @@ def word_count(documents: List[str]) -> List[Tuple[str, int]]:
     return [output
            for word, counts in collector.items()
            for output in wc_reducer(word, counts)]
+
+# Writing a general map_reduce function
+
+from typing import Callable, Iterable, Any, Tuple
+
+# A key/value pair is just a 2-tuple
+KV = Tuple[Any, Any]
+
+# A Mapper is a function that returns an Iterable of key/value pairs
+Mapper = Callable[..., Iterable[KV]]
+
+# A Reducer is a function that takes a key and an iterable of values
+# and returns a key/value pair
+
+Reducer = Callable[[Any, Iterable], KV]
+
+def map_reduce(inputs: Iterable,
+              mapper: Mapper,
+              reducer: Reducer) -> List[KV]:
+    """Run MapReduce on the inputs using mapper and reducer"""
+    collector = defaultdict(list)
+    
+    for input in inputs:
+        for key, value in mapper(input):
+            collector[key].append(value)
+    
+    return [output
+           for key, values in collector.items()
+           for output in reducer(key, values)]
+
+def values_reducer(values_fn: Callable) -> Reducer:
+    """Return a reducer that just applies values_fn to its values"""
+    def reduce(key, values: Iterable) -> KV:
+        return (key, values_fn(values))         
+    return reduce
