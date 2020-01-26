@@ -261,3 +261,8 @@ user_id_sum = (
         .group_by(group_by_columns=[],
                   aggregates={ "user_id_sum" : sum_user_ids })
     )
+
+
+friendliest_letters = (avg_friends_by_letter
+                      .order_by(lambda row: -row["avg_num_friends"])
+                      .limit(4))
