@@ -266,3 +266,15 @@ user_id_sum = (
 friendliest_letters = (avg_friends_by_letter
                       .order_by(lambda row: -row["avg_num_friends"])
                       .limit(4))
+
+
+user_interests = Table(['user_id', 'interest'], [int, str])
+user_interests.insert([0, "SQL"])
+user_interests.insert([0, "NoSQL"])
+user_interests.insert([2, "SQL"])
+user_interests.insert([2, "MySQL"])
+
+sql_users = (users
+            .join(user_interests)
+            .where(lambda row: row["interest"] == "SQL")
+            .select(keep_columns = ["name"]))
