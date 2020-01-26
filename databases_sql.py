@@ -206,3 +206,9 @@ users.insert([7, "Devin", 2])
 users.insert([8, "Kate", 2])
 users.insert([9, "Klein", 3])
 users.insert([10, "Jen", 1])
+
+users.update({'num_friends': 5},  # set num_friends == 1
+       lambda row: row['user_id'] == 1) # in rows where user_id = 1
+
+# Select * FROM users
+all_users = users.select()
