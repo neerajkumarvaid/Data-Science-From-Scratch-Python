@@ -236,3 +236,17 @@ stats_by_length = (users
                   .group_by(group_by_columns = ["name_length"],
                            aggregates = {"min_user_id": min_user_id,
                                         "num_users": length}))
+
+    return row["name"][0] if row["name"] else ""
+
+def average_num_friends(rows: List[Row]) -> float:
+    return sum(row["num_friends"] for row in rows)/ len(rows)
+    
+def enough_friends(rows: List[Row]) -> bool:
+    return average_num_friends(rows) > 1
+
+avg_friends_by_letter = (users
+                        .select(additional_columns = {'first_letter': first_letter_of_name})
+                        .group_by(group_by_columns = ['first_letter'],
+                                 aggregates = {"avg_num_friends": average_num_friends},
+                                 having = enough_friends))
