@@ -179,3 +179,11 @@ A = [[3, 2, 0],
 B = [[4, -1, 0],
      [10, 0, 0],
      [0, 0, 0]]
+
+entries = [Entry("A", 0, 0, 3), Entry("A", 0, 1,  2), Entry("B", 0, 0, 4),
+               Entry("B", 0, 1, -1), Entry("B", 1, 0, 10)]
+
+mapper = matrix_multiply_mapper(num_rows_a=2, num_cols_b=3)
+reducer = matrix_multiply_reducer
+
+set(map_reduce(entries, mapper, reducer))
