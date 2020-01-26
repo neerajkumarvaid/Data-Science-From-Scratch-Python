@@ -212,3 +212,14 @@ users.update({'num_friends': 5},  # set num_friends == 1
 
 # Select * FROM users
 all_users = users.select()
+
+two_users = users.limit(2)
+just_ids = users.select(keep_columns = ["user_id"])
+dunn_ids = (users.where(lambda row: row["name"] == "Dunn")
+           .select(keep_columns = ["user_id"]))
+
+def name_length(row) -> int:
+    return len(row["name"])
+
+name_lengths = users.select(keep_columns = [],
+                           additional_columns = {"name_length": name_length})
