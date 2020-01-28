@@ -1,5 +1,5 @@
 # Data-Science-From-Scratch-Python
-This repository contains my implementation of the algorithms discussed in the book entitled "Data Science From Scratch" by Joel Grus. 
+This repository contains my implementation of the algorithms described in the book "Data Science From Scratch" by Joel Grus. 
 I used Python 3.7 to code these algorithms.  
 
 | **S.No.**| **File name** | **Description** |
